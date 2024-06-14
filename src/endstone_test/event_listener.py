@@ -1,3 +1,4 @@
+import datetime
 from functools import partial
 from uuid import UUID
 
@@ -14,7 +15,6 @@ class EventListener:
     def on_player_join(self, event: PlayerJoinEvent) -> None:
         def send_welcome_message(player_name: str, player_id: UUID) -> None:
             self.server.broadcast_message(ColorFormat.YELLOW + f"{player_name} joined the game.")
-            self.server.dispatch_command(self.server.command_sender, f"say {player_name}, uuid: {player_id}")
 
         self.server.scheduler.run_task_later(
             self._plugin, partial(send_welcome_message, event.player.name, event.player.unique_id), delay=20
@@ -22,7 +22,22 @@ class EventListener:
 
         assert event.player in self.server.online_players
         assert self.server.get_player(event.player.name) is event.player
-        # assert self.server.get_player(event.player.unique_id) is event.player # TODO: this will crash
+        # assert self.server.get_player(event.player.unique_id) is event.player # TODO(fixme): this will crash
+
+        self._plugin.logger.info("===========================")
+        self._plugin.logger.info(f"Name: {event.player.name}")
+        self._plugin.logger.info(f"UUID: {event.player.unique_id}")
+        self._plugin.logger.info(f"Entity Id: {event.player.runtime_id}")
+        self._plugin.logger.info(f"Address: {event.player.address}")
+        self._plugin.logger.info(f"Game mode: {event.player.game_mode}")
+        self._plugin.logger.info(f"Location: {event.player.location}")
+        self._plugin.logger.info(f"Velocity: {event.player.velocity}")
+        self._plugin.logger.info(f"Op status: {event.player.op}")
+        self._plugin.logger.info(f"Ping: {event.player.ping / datetime.timedelta(milliseconds=1)}")
+        self._plugin.logger.info("===========================")
+
+        assert event.player.inventory.size == 36
+        assert event.player.inventory.max_stack_size == 254
 
     @property
     def server(self) -> Server:

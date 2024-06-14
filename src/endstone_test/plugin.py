@@ -32,6 +32,9 @@ class TestPlugin(Plugin):
         self._listener = EventListener(self)
         self.register_events(self._listener)
 
+        assert self.get_command("test") is not None
+        assert self.get_command("test").plugin is self
+
         self.logger.info("on_enable is called!")
 
         assert len(self.server.levels) == 1
@@ -39,5 +42,20 @@ class TestPlugin(Plugin):
         self.server.max_players = 100
         assert self.server.max_players == 100
 
+        self.server.broadcast_message("Hello!")
+
+        self.server.scheduler.run_task_timer(self, self.send_debug_message, delay=0, period=10)
+
     def on_disable(self) -> None:
         self.logger.info("on_disable is called!")
+
+    def send_debug_message(self):
+        for player in self.server.online_players:
+            player.send_tip(
+                f"Level: {player.level.name}, Time: {player.level.time}\n"
+                f"Location: {player.location}\n"
+                f"Velocity: {player.velocity}\n"
+                f"Dimension: {player.location.dimension.name}\n"
+                f"InWater: {player.is_in_water}, InLava: {player.is_in_lava}\n"
+                f"OnGround: {player.is_on_ground}, Flying: {player.is_flying}"
+            )
