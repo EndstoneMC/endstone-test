@@ -3,19 +3,20 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "endstone-example"
-version = "0.4.0"
+name = "endstone-test"
+version = "0.0.1"
 dependencies = []
 authors = [
+    { name = "Vincent Wu", email = "magicdroidx@gmail.com" },
     { name = "Endstone Developers", email = "hello@endstone.dev" },
 ]
-description = "Python example plugin for Endstone servers"
+description = "Endstone plugin that tests the functionality of APIs."
 readme = "README.md"
 license = { file = "LICENSE" }
-keywords = ["endstone", "plugin"]
+keywords = ["endstone", "plugin", "test"]
 
 [project.urls]
-Homepage = "https://github.com/EndstoneMC/python-example-plugin"
+Homepage = "https://github.com/EndstoneMC/endstone-test"
 
 [project.entry-points."endstone"]
-example = "endstone_example:ExamplePlugin"
+test = "endstone_test:TestPlugin"
