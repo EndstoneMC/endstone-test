@@ -8,6 +8,21 @@ class TestPlugin(Plugin):
     name = "EndstoneTest"
     api_version = "0.4"
 
+    commands = {
+        "test": {
+            "description": "Run the test command",
+            "usages": ["/test"],
+            "permissions": ["endstone_test.command.test"],
+        }
+    }
+
+    permissions = {
+        "endstone_test.command.test": {
+            "description": "Allow users to use the /test command.",
+            "default": True,
+        }
+    }
+
     def on_load(self) -> None:
         self.logger.info("on_load is called!")
         assert len(self.server.levels) == 0
