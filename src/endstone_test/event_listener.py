@@ -46,6 +46,11 @@ class EventListener:
         assert event.player.inventory.size == 36
         assert event.player.inventory.max_stack_size == 254
 
+        assert event.player.has_permission("minecraft.command.me") is True
+        event.player.add_attachment(self._plugin, "minecraft.command.me", False)
+        assert event.player.has_permission("minecraft.command.me") is False
+        event.player.update_commands()
+
     @property
     def server(self) -> Server:
         return self._plugin.server
