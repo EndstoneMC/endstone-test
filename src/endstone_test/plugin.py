@@ -1,3 +1,6 @@
+import datetime
+import uuid
+
 from endstone import __minecraft_version__
 from endstone.plugin import Plugin
 
@@ -42,8 +45,10 @@ class TestPlugin(Plugin):
         self.server.max_players = 100
         assert self.server.max_players == 100
 
-        self.server.broadcast_message("Hello!")
+        assert self.server.get_player("non-existent") is None
+        assert self.server.get_player(uuid.uuid4()) is None
 
+        self.server.broadcast_message("Hello!")
         self.server.scheduler.run_task_timer(self, self.send_debug_message, delay=0, period=10)
 
     def on_disable(self) -> None:
@@ -52,7 +57,7 @@ class TestPlugin(Plugin):
     def send_debug_message(self):
         for player in self.server.online_players:
             player.send_tip(
-                f"Level: {player.level.name}, Time: {player.level.time}\n"
+                f"Level: {player.level.name}, Time: {player.level.time}, Ping: {player.ping / datetime.timedelta(milliseconds=1)}\n"
                 f"Location: {player.location}\n"
                 f"Velocity: {player.velocity}\n"
                 f"Dimension: {player.location.dimension.name}\n"
