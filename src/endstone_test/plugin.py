@@ -3,7 +3,6 @@ import uuid
 
 from endstone import __minecraft_version__
 from endstone.plugin import Plugin
-
 from endstone_test.event_listener import EventListener
 
 
@@ -47,6 +46,14 @@ class TestPlugin(Plugin):
 
         assert self.server.get_player("non-existent") is None
         assert self.server.get_player(uuid.uuid4()) is None
+
+        for level in self.server.levels:
+            self.logger.info(f"Level: {level.name}")
+            assert self.server.get_level(level.name) is level
+
+            for dimension in level.dimensions:
+                self.logger.info(f"\tDimension: {dimension.name}")
+                assert level.get_dimension(dimension.name) is dimension
 
         self.server.broadcast_message("Hello!")
         self.server.scheduler.run_task_timer(self, self.send_debug_message, delay=0, period=10)

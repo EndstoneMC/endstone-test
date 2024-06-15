@@ -2,13 +2,21 @@ import datetime
 from functools import partial
 
 from endstone import ColorFormat, Server
-from endstone.event import event_handler, PlayerJoinEvent
+from endstone.event import event_handler, PlayerLoginEvent, PlayerJoinEvent
 from endstone.plugin import Plugin
 
 
 class EventListener:
     def __init__(self, plugin: Plugin):
         self._plugin = plugin
+        self._should_kick = True
+
+    @event_handler
+    def on_player_login(self, event: PlayerLoginEvent) -> None:
+        if self._should_kick:
+            event.kick_message = "Player::kick is working. Please join again."
+            event.cancelled = True
+            self._should_kick = False
 
     @event_handler
     def on_player_join(self, event: PlayerJoinEvent) -> None:
