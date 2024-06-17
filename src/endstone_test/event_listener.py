@@ -1,7 +1,7 @@
 import datetime
 from functools import partial
 
-from endstone import ColorFormat, Server
+from endstone import ColorFormat, Server, Translatable
 from endstone.event import *
 from endstone.plugin import Plugin
 
@@ -22,6 +22,9 @@ class EventListener:
     def on_player_join(self, event: PlayerJoinEvent) -> None:
         def send_welcome_message(player_name: str) -> None:
             self.server.broadcast_message(ColorFormat.YELLOW + f"{player_name} joined the game.")
+            player = self.server.get_player(player_name)
+            assert player is not None
+            player.send_message(Translatable("commands.give.success", ["Secret Item", "233", "Secret Man"]))
 
         self.server.scheduler.run_task_later(self._plugin, partial(send_welcome_message, event.player.name), delay=20)
 
@@ -54,11 +57,12 @@ class EventListener:
 
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
-        self._plugin.logger.info(f"{event.player.name} dies.")
+        # TODO: add player.is_dead check
+        pass
 
     @event_handler
     def on_actor_death(self, event: ActorDeathEvent):
-        self._plugin.logger.info(f"{event.actor.name} dies.")
+        self._plugin.logger.info(f"{event.actor.name} died.")
 
     @property
     def server(self) -> Server:
