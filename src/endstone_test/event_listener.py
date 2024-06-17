@@ -2,7 +2,7 @@ import datetime
 from functools import partial
 
 from endstone import ColorFormat, Server
-from endstone.event import event_handler, PlayerLoginEvent, PlayerJoinEvent
+from endstone.event import *
 from endstone.plugin import Plugin
 
 
@@ -23,9 +23,7 @@ class EventListener:
         def send_welcome_message(player_name: str) -> None:
             self.server.broadcast_message(ColorFormat.YELLOW + f"{player_name} joined the game.")
 
-        self.server.scheduler.run_task_later(
-            self._plugin, partial(send_welcome_message, event.player.name), delay=20
-        )
+        self.server.scheduler.run_task_later(self._plugin, partial(send_welcome_message, event.player.name), delay=20)
 
         assert event.player in self.server.online_players
         assert self.server.get_player(event.player.name) is event.player
@@ -39,7 +37,7 @@ class EventListener:
         self._plugin.logger.info(f"Game mode: {event.player.game_mode}")
         self._plugin.logger.info(f"Location: {event.player.location}")
         self._plugin.logger.info(f"Velocity: {event.player.velocity}")
-        self._plugin.logger.info(f"Op status: {event.player.op}")
+        self._plugin.logger.info(f"Op status: {event.player.is_op}")
         self._plugin.logger.info(f"Ping: {event.player.ping / datetime.timedelta(milliseconds=1)}")
         self._plugin.logger.info("===========================")
 
@@ -50,6 +48,17 @@ class EventListener:
         event.player.add_attachment(self._plugin, "minecraft.command.me", False)
         assert event.player.has_permission("minecraft.command.me") is False
         event.player.update_commands()
+
+        event.player.allow_flight = True
+        assert event.player.allow_flight is True
+
+    @event_handler
+    def on_player_death(self, event: PlayerDeathEvent):
+        self._plugin.logger.info(f"{event.player.name} dies.")
+
+    @event_handler
+    def on_actor_death(self, event: ActorDeathEvent):
+        self._plugin.logger.info(f"{event.actor.name} dies.")
 
     @property
     def server(self) -> Server:

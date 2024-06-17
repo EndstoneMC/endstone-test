@@ -3,6 +3,7 @@ import uuid
 
 from endstone import __minecraft_version__
 from endstone.plugin import Plugin
+
 from endstone_test.event_listener import EventListener
 
 
@@ -69,5 +70,5 @@ class TestPlugin(Plugin):
                 f"Velocity: {player.velocity}\n"
                 f"Dimension: {player.location.dimension.name}\n"
                 f"InWater: {player.is_in_water}, InLava: {player.is_in_lava}\n"
-                f"OnGround: {player.is_on_ground}, Flying: {player.is_flying}"
+                f"OnGround: {player.is_on_ground}, MayFly: {player.allow_flight}, Flying: {player.is_flying}"
             )
