@@ -70,5 +70,6 @@ class TestPlugin(Plugin):
                 f"Velocity: {player.velocity}\n"
                 f"Dimension: {player.location.dimension.name}\n"
                 f"InWater: {player.is_in_water}, InLava: {player.is_in_lava}\n"
-                f"OnGround: {player.is_on_ground}, MayFly: {player.allow_flight}, Flying: {player.is_flying}"
+                f"OnGround: {player.is_on_ground}, MayFly: {player.allow_flight}, Flying: {player.is_flying}\n"
+                f"Exp: {player.exp}, Lv: {player.exp_level}"
             )

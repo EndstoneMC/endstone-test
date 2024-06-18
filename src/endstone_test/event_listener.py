@@ -55,6 +55,11 @@ class EventListener:
         event.player.allow_flight = True
         assert event.player.allow_flight is True
 
+        current_exp_lvl = event.player.exp_level
+        event.player.give_exp_levels(2)
+        assert event.player.exp_level == current_exp_lvl + 2
+        assert 0.0 <= event.player.exp <= 1.0
+
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
         # TODO: add player.is_dead check
