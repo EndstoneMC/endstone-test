@@ -58,7 +58,9 @@ class EventListener:
         current_exp_lvl = event.player.exp_level
         event.player.give_exp_levels(2)
         assert event.player.exp_level == current_exp_lvl + 2
-        assert 0.0 <= event.player.exp <= 1.0
+        assert 0.0 <= event.player.exp_progress <= 1.0
+        event.player.exp_level = current_exp_lvl + 1
+        assert event.player.exp_level == current_exp_lvl + 1
 
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
