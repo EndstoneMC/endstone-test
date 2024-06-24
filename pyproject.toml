@@ -5,7 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "endstone-test"
 version = "0.0.1"
-dependencies = []
+dependencies = [
+    "babel"
+]
 authors = [
     { name = "Vincent Wu", email = "magicdroidx@gmail.com" },
     { name = "Endstone Developers", email = "hello@endstone.dev" },

@@ -1,6 +1,7 @@
 import datetime
 from functools import partial
 
+from babel import Locale
 from endstone import ColorFormat, Server, Translatable
 from endstone.event import *
 from endstone.plugin import Plugin
@@ -42,6 +43,8 @@ class EventListener:
         self._plugin.logger.info(f"Velocity: {event.player.velocity}")
         self._plugin.logger.info(f"Op status: {event.player.is_op}")
         self._plugin.logger.info(f"Ping: {event.player.ping / datetime.timedelta(milliseconds=1)}")
+        self._plugin.logger.info(f"Locale: {event.player.locale}")
+        self._plugin.logger.info(f"Device: {event.player.device_os} {event.player.device_id}")
         self._plugin.logger.info("===========================")
 
         assert event.player.inventory.size == 36
@@ -61,6 +64,15 @@ class EventListener:
         assert 0.0 <= event.player.exp_progress <= 1.0
         event.player.exp_level = current_exp_lvl + 1
         assert event.player.exp_level == current_exp_lvl + 1
+
+        event.player.fly_speed = 0.5
+        event.player.walk_speed = 0.05
+        assert abs(event.player.fly_speed - 0.5) <= 0.00001
+        assert abs(event.player.walk_speed - 0.05) <= 0.00001
+        event.player.fly_speed = 0.05
+        event.player.walk_speed = 0.10
+
+        assert Locale.parse(event.player.locale) is not None, event.player.locale
 
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
