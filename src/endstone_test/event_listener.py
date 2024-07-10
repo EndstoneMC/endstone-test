@@ -1,6 +1,8 @@
 import datetime
 from functools import partial
+from pathlib import Path
 
+from PIL import Image
 from babel import Locale
 from endstone import ColorFormat, Server, Translatable
 from endstone.event import *
@@ -73,6 +75,15 @@ class EventListener:
         event.player.walk_speed = 0.10
 
         assert Locale.parse(event.player.locale) is not None, event.player.locale
+
+        skin = event.player.skin
+        self._plugin.logger.info(f"Skin Id: {skin.skin_id}, Cape Id: {skin.cape_id}")
+        assert skin.skin_data.shape[2] == 4
+        skin_path = Path(self._plugin.data_folder) / "skins"
+        skin_path.mkdir(parents=True, exist_ok=True)
+        Image.fromarray(skin.skin_data).save(skin_path / f"{event.player.name}.png")
+        if skin.cape_data is not None:
+            Image.fromarray(skin.cape_data).save(skin_path / f"{event.player.name}_cape.png")
 
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
