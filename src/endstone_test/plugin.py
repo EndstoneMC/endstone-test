@@ -1,7 +1,8 @@
 import datetime
 import uuid
 
-from endstone import __minecraft_version__
+from endstone import __minecraft_version__, Player
+from endstone.command import Command, CommandSender, ConsoleCommandSender
 from endstone.plugin import Plugin
 
 from endstone_test.event_listener import EventListener
@@ -61,6 +62,15 @@ class TestPlugin(Plugin):
 
     def on_disable(self) -> None:
         self.logger.info("on_disable is called!")
+
+    def on_command(self, sender: CommandSender, command: Command, args: list[str]) -> bool:
+        if isinstance(sender, ConsoleCommandSender):
+            sender.send_message("You are the console!")
+        elif isinstance(sender, Player):
+            sender.send_message("You are the player!")
+        else:
+            sender.send_message(f"You are {sender.__class__}!")
+        return True
 
     def send_debug_message(self):
         for player in self.server.online_players:

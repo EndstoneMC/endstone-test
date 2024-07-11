@@ -78,11 +78,12 @@ class EventListener:
 
         skin = event.player.skin
         self._plugin.logger.info(f"Skin Id: {skin.skin_id}, Cape Id: {skin.cape_id}")
-        assert skin.skin_data.shape[2] == 4
+        assert skin.skin_data.shape[2] == 4, f"Bad shape for skin data: {skin.skin_data.shape}"
         skin_path = Path(self._plugin.data_folder) / "skins"
         skin_path.mkdir(parents=True, exist_ok=True)
         Image.fromarray(skin.skin_data).save(skin_path / f"{event.player.name}.png")
         if skin.cape_data is not None:
+            assert skin.cape_data.shape[2] == 4, f"Bad shape for cape data: {skin.cape_data.shape}"
             Image.fromarray(skin.cape_data).save(skin_path / f"{event.player.name}_cape.png")
 
     @event_handler
