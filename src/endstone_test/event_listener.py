@@ -93,6 +93,11 @@ class EventListener:
     def on_actor_death(self, event: ActorDeathEvent):
         self._plugin.logger.info(f"{event.actor.name} died.")
 
+    @event_handler
+    def on_actor_teleport(self, event: ActorTeleportEvent):
+        self._plugin.logger.info(
+            f"{event.actor.name} teleported from {repr(event.from_location)} to {repr(event.to_location)}")
+
     @property
     def server(self) -> Server:
         return self._plugin.server
