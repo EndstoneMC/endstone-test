@@ -2,7 +2,6 @@ import datetime
 from functools import partial
 from pathlib import Path
 
-from PIL import Image
 from babel import Locale
 from endstone import ColorFormat, Server, Translatable
 from endstone.event import *
@@ -28,6 +27,7 @@ class EventListener:
             player = self.server.get_player(player_name)
             assert player is not None
             player.send_message(Translatable("commands.give.success", ["Secret Item", "233", "Secret Man"]))
+            player.send_title("Welcome!", player_name)
 
         self.server.scheduler.run_task_later(self._plugin, partial(send_welcome_message, event.player.name), delay=20)
 
@@ -81,10 +81,8 @@ class EventListener:
         assert skin.skin_data.shape[2] == 4, f"Bad shape for skin data: {skin.skin_data.shape}"
         skin_path = Path(self._plugin.data_folder) / "skins"
         skin_path.mkdir(parents=True, exist_ok=True)
-        Image.fromarray(skin.skin_data).save(skin_path / f"{event.player.name}.png")
         if skin.cape_data is not None:
             assert skin.cape_data.shape[2] == 4, f"Bad shape for cape data: {skin.cape_data.shape}"
-            Image.fromarray(skin.cape_data).save(skin_path / f"{event.player.name}_cape.png")
 
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
