@@ -4,6 +4,8 @@ import uuid
 from endstone import __minecraft_version__, Player
 from endstone.command import Command, CommandSender, ConsoleCommandSender
 from endstone.plugin import Plugin
+from endstone.scoreboard import Criteria, DisplaySlot
+
 from endstone_test.event_listener import EventListener
 
 
@@ -58,6 +60,12 @@ class TestPlugin(Plugin):
 
         self.server.broadcast_message("Hello!")
         self.server.scheduler.run_task_timer(self, self.send_debug_message, delay=0, period=10)
+        self.server.scheduler.run_task_timer(self, self.update_player_pings, delay=0, period=20)
+
+        self.objective = self.server.scoreboard.get_objective("ping")
+        if not self.objective:
+            self.objective = self.server.scoreboard.add_objective("ping", Criteria.DUMMY, "Player Ping")
+        self.objective.set_display(DisplaySlot.SIDE_BAR)
 
     def on_disable(self) -> None:
         self.logger.info("on_disable is called!")
@@ -81,3 +89,8 @@ class TestPlugin(Plugin):
                 f"FlySpeed: {player.fly_speed:.2f}, WalkSpeed: {player.walk_speed:.2f}\n"
                 f"Exp: {player.exp_progress}, Lv: {player.exp_level}, Total: {player.total_exp}"
             )
+
+    def update_player_pings(self):
+        for player in self.server.online_players:
+            score = self.objective.get_score(player)
+            score.value = int(player.ping / datetime.timedelta(milliseconds=1))
