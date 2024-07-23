@@ -4,7 +4,7 @@ import uuid
 from endstone import Translatable as tr
 from endstone import __minecraft_version__, Player
 from endstone.command import Command, CommandSender, ConsoleCommandSender
-from endstone.form import MessageForm
+from endstone.form import ActionForm, MessageForm, Button
 from endstone.plugin import Plugin
 from endstone.scoreboard import Criteria, DisplaySlot
 
@@ -83,6 +83,19 @@ class TestPlugin(Plugin):
                     content=tr("accessibility.list.or.two", ["Player 1", "Player 2"]),
                     button1="Yes",
                     button2="No",
+                )
+            )
+
+            sender.send_form(
+                ActionForm(
+                    title=tr("permissions.removeplayer"),
+                    content=tr("accessibility.list.or.two", ["Player 1", "Player 2"]),
+                    buttons=[
+                        Button("Endstone",
+                               icon="https://avatars.githubusercontent.com/u/142812342"),
+                        Button("Instagram"),
+                        Button("Twitter"),
+                    ]
                 )
             )
         else:
