@@ -1,8 +1,10 @@
 import datetime
 import uuid
 
+from endstone import Translatable as tr
 from endstone import __minecraft_version__, Player
 from endstone.command import Command, CommandSender, ConsoleCommandSender
+from endstone.form import MessageForm
 from endstone.plugin import Plugin
 from endstone.scoreboard import Criteria, DisplaySlot
 
@@ -75,8 +77,17 @@ class TestPlugin(Plugin):
             sender.send_message("You are the console!")
         elif isinstance(sender, Player):
             sender.send_message("You are the player!")
+            sender.send_form(
+                MessageForm(
+                    title=tr("permissions.removeplayer"),
+                    content=tr("accessibility.list.or.two", ["Player 1", "Player 2"]),
+                    button1="Yes",
+                    button2="No",
+                )
+            )
         else:
-            sender.send_message(f"You are {sender.__class__}!")
+            assert False, f"Unknown command sender: {sender.__class__}"
+
         return True
 
     def send_debug_message(self):
