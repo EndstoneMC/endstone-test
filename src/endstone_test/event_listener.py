@@ -95,8 +95,7 @@ class EventListener:
 
     @event_handler
     def on_actor_teleport(self, event: ActorTeleportEvent):
-        self._plugin.logger.info(
-            f"{event.actor.name} teleported from {repr(event.from_location)} to {repr(event.to_location)}")
+        self._plugin.logger.info(f"{event.actor.name} teleported from {event.from_location} to {event.to_location}")
 
     @property
     def server(self) -> Server:

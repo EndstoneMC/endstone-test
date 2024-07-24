@@ -1,13 +1,12 @@
 import datetime
 import uuid
 
-from endstone import Translatable as tr
-from endstone import __minecraft_version__, Player
-from endstone.command import Command, CommandSender, ConsoleCommandSender
-from endstone.form import ActionForm, MessageForm, Button
+from endstone import __minecraft_version__
+from endstone.command import Command, CommandSender
 from endstone.plugin import Plugin
 from endstone.scoreboard import Criteria, DisplaySlot
 
+from endstone_test.command_executor import TestCommandExecutor
 from endstone_test.event_listener import EventListener
 
 
@@ -41,7 +40,7 @@ class TestPlugin(Plugin):
 
         assert self.get_command("test") is not None
         assert self.get_command("test").plugin is self
-
+        self.get_command("test").executor = TestCommandExecutor()
         self.logger.info("on_enable is called!")
 
         assert len(self.server.levels) == 1
@@ -73,34 +72,7 @@ class TestPlugin(Plugin):
         self.logger.info("on_disable is called!")
 
     def on_command(self, sender: CommandSender, command: Command, args: list[str]) -> bool:
-        if isinstance(sender, ConsoleCommandSender):
-            sender.send_message("You are the console!")
-        elif isinstance(sender, Player):
-            sender.send_message("You are the player!")
-            sender.send_form(
-                MessageForm(
-                    title=tr("permissions.removeplayer"),
-                    content=tr("accessibility.list.or.two", ["Player 1", "Player 2"]),
-                    button1="Yes",
-                    button2="No",
-                )
-            )
-
-            sender.send_form(
-                ActionForm(
-                    title=tr("permissions.removeplayer"),
-                    content=tr("accessibility.list.or.two", ["Player 1", "Player 2"]),
-                    buttons=[
-                        Button("Endstone",
-                               icon="https://avatars.githubusercontent.com/u/142812342"),
-                        Button("Instagram"),
-                        Button("Twitter"),
-                    ]
-                )
-            )
-        else:
-            assert False, f"Unknown command sender: {sender.__class__}"
-
+        self.logger.info(f"on_command: {sender} {command} {args}")
         return True
 
     def send_debug_message(self):
