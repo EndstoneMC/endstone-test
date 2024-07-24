@@ -29,7 +29,7 @@ class EventListener:
             player.send_message(Translatable("commands.give.success", ["Secret Item", "233", "Secret Man"]))
             player.send_title("Welcome!", player_name)
 
-        self.server.scheduler.run_task_later(self._plugin, partial(send_welcome_message, event.player.name), delay=20)
+        self.server.scheduler.run_task(self._plugin, partial(send_welcome_message, event.player.name), delay=20)
 
         assert event.player in self.server.online_players
         assert self.server.get_player(event.player.name) is event.player

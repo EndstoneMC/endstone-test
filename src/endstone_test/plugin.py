@@ -60,8 +60,8 @@ class TestPlugin(Plugin):
                 assert level.get_dimension(dimension.name) is dimension
 
         self.server.broadcast_message("Hello!")
-        self.server.scheduler.run_task_timer(self, self.send_debug_message, delay=0, period=10)
-        self.server.scheduler.run_task_timer(self, self.update_player_pings, delay=0, period=20)
+        self.server.scheduler.run_task(self, self.send_debug_message, period=10)
+        self.server.scheduler.run_task(self, self.update_player_pings, period=20)
 
         self.objective = self.server.scoreboard.get_objective("ping")
         if not self.objective:
