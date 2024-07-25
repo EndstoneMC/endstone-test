@@ -1,7 +1,7 @@
 from endstone import ColorFormat, Player
 from endstone import Translatable as tr
 from endstone.command import Command, CommandExecutor, CommandSender
-from endstone.form import ActionForm, MessageForm, ModalForm, Toggle
+from endstone.form import *
 
 
 class TestCommandExecutor(CommandExecutor):
@@ -49,8 +49,16 @@ class TestCommandExecutor(CommandExecutor):
                         ModalForm(
                             title=tr("permissions.removeplayer"),
                             controls=[
-                                Toggle("This is a toggle", True),
-                                # Toggle(tr("accessibility.list.or.two", ["Player 1", "Player 2"]), True),
+                                Dropdown(label="This is a dropdown", options=["Apple", "Orange", "Banana"]),
+                                Label(text="This is a label"),
+                                Slider(label="This is a slider", min=0, max=5, step=1, default_value=2),
+                                StepSlider(label="This is a step slider", options=["Mild", "Hot", "Extra hot"]),
+                                TextInput(
+                                    label="This is a text input",
+                                    placeholder="This is the placehoder",
+                                    default_value="Delete me",
+                                ),
+                                Toggle(label="This is a toggle", default_value=True),
                             ],
                             submit_button="Let's GO",
                             icon="https://avatars.githubusercontent.com/u/142812342",
