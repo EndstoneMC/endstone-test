@@ -5,13 +5,12 @@ from endstone import __minecraft_version__
 from endstone.command import Command, CommandSender
 from endstone.plugin import Plugin
 from endstone.scoreboard import Criteria, DisplaySlot
-
 from endstone_test.command_executor import TestCommandExecutor
 from endstone_test.event_listener import EventListener
 
 
 class TestPlugin(Plugin):
-    name = "EndstoneTest"
+    prefix = "EndstoneTest"
     api_version = "0.4"
 
     commands = {
