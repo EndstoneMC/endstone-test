@@ -5,6 +5,7 @@ from endstone import __minecraft_version__
 from endstone.command import Command, CommandSender
 from endstone.plugin import Plugin
 from endstone.scoreboard import Criteria, DisplaySlot
+
 from endstone_test.command_executor import TestCommandExecutor
 from endstone_test.event_listener import EventListener
 
@@ -16,7 +17,7 @@ class TestPlugin(Plugin):
     commands = {
         "test": {
             "description": "Run the test command",
-            "usages": ["/test"],
+            "usages": ["/test (form)<test: EndstoneTests> (message|action|modal)<type: FormTypes>"],
             "permissions": ["endstone_test.command.test"],
         }
     }
@@ -65,6 +66,7 @@ class TestPlugin(Plugin):
         self.objective = self.server.scoreboard.get_objective("ping")
         if not self.objective:
             self.objective = self.server.scoreboard.add_objective("ping", Criteria.DUMMY, "Player Ping")
+        assert self.objective, "Objective is None!"
         self.objective.set_display(DisplaySlot.SIDE_BAR)
 
     def on_disable(self) -> None:
