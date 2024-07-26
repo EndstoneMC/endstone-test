@@ -1,3 +1,5 @@
+import json
+
 from endstone import ColorFormat, Player
 from endstone import Translatable as tr
 from endstone.command import Command, CommandExecutor, CommandSender
@@ -5,8 +7,7 @@ from endstone.form import *
 
 
 class TestCommandExecutor(CommandExecutor):
-    def on_close(self, player: Player):
-        player.send_message("You just closed a form")
+    __test__ = False
 
     def on_command(self, sender: CommandSender, command: Command, args: list[str]) -> bool:
         match args:
@@ -62,7 +63,7 @@ class TestCommandExecutor(CommandExecutor):
                             ],
                             submit_button="Let's GO",
                             icon="https://avatars.githubusercontent.com/u/142812342",
-                            on_submit=lambda player, data: player.send_message(f"Response {data}"),
+                            on_submit=lambda player, data: player.send_message(f"Response {json.loads(data)}"),
                             on_close=lambda player: player.send_message(
                                 f"You just closed a {ColorFormat.GREEN}modal form"
                             ),

@@ -5,13 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "endstone-test"
 version = "0.0.1"
-dependencies = [
-    "babel",
-    "pillow"
-]
+dependencies = ["babel", "pytest"]
 authors = [
     { name = "Vincent Wu", email = "magicdroidx@gmail.com" },
-    { name = "Endstone Developers", email = "hello@endstone.dev" },
 ]
 description = "Endstone plugin that tests the functionality of APIs."
 readme = "README.md"
@@ -22,4 +18,4 @@ keywords = ["endstone", "plugin", "test"]
 Homepage = "https://github.com/EndstoneMC/endstone-test"
 
 [project.entry-points."endstone"]
-test = "endstone_test:TestPlugin"
+test = "endstone_test:EndstoneTest"
