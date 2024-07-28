@@ -29,7 +29,7 @@ class EventListener:
         self._plugin.logger.info(f"Location: {event.player.location}")
         self._plugin.logger.info(f"Velocity: {event.player.velocity}")
         self._plugin.logger.info(f"Op status: {event.player.is_op}")
-        self._plugin.logger.info(f"Ping: {event.player.ping / datetime.timedelta(milliseconds=1)}")
+        self._plugin.logger.info(f"Ping: {event.player.ping}ms")
         self._plugin.logger.info(f"Locale: {event.player.locale}")
         self._plugin.logger.info(f"Device: {event.player.device_os} {event.player.device_id}")
         self._plugin.logger.info("===========================")
