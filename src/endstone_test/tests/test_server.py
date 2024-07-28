@@ -23,3 +23,12 @@ def test_server_levels(server: Server) -> None:
 
 def test_dispatch_command(server: Server) -> None:
     server.dispatch_command(server.command_sender, "say Hello, World!")
+
+
+def test_max_players(server: Server) -> None:
+    # get max players
+    server.dispatch_command(server.command_sender, "setmaxplayers 5")
+    assert server.max_players == 5
+    # set max players
+    server.max_players = 100
+    assert server.max_players == 100
