@@ -23,6 +23,7 @@ class EventListener:
         self._plugin.logger.info("===========================")
         self._plugin.logger.info(f"Name: {event.player.name}")
         self._plugin.logger.info(f"UUID: {event.player.unique_id}")
+        self._plugin.logger.info(f"XUID: {event.player.xuid}")
         self._plugin.logger.info(f"Entity Id: {event.player.runtime_id}")
         self._plugin.logger.info(f"Address: {event.player.address}")
         self._plugin.logger.info(f"Game mode: {event.player.game_mode}")

@@ -17,7 +17,7 @@ class FixtureInjection:
 
 class EndstoneTest(Plugin):
     prefix = "EndstoneTest"
-    api_version = "0.4"
+    api_version = "0.5"
 
     commands = {
         "test": {
