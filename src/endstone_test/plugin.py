@@ -22,7 +22,11 @@ class EndstoneTest(Plugin):
     commands = {
         "test": {
             "description": "Run the test command",
-            "usages": ["/test (form)<test: EndstoneTests> (message|action|modal)<type: FormTypes>"],
+            "usages": [
+                "/test (form)<test: FormTestAction> (message|action|modal)<type: FormTypes>",
+                "/test (sender)<test: SenderTestAction>",
+                "/test (selector)<test: SelectorTestAction> <target: target>"
+            ],
             "permissions": ["endstone_test.command.test"],
         }
     }

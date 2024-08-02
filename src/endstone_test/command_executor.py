@@ -2,7 +2,7 @@ import json
 
 from endstone import ColorFormat, Player
 from endstone import Translatable as tr
-from endstone.command import Command, CommandExecutor, CommandSender
+from endstone.command import Command, CommandExecutor, CommandSender, ConsoleCommandSender
 from endstone.form import *
 
 
@@ -71,5 +71,16 @@ class TestCommandExecutor(CommandExecutor):
                     )
                 else:
                     sender.send_error_message(f"Unknown form type: {type}")
+
+            case ["sender"]:
+                if isinstance(sender, Player):
+                    sender.send_message("You are a player!")
+                elif isinstance(sender, ConsoleCommandSender):
+                    sender.send_message("You are the console!")
+                else:
+                    sender.send_error_message(f"Unknown sender: {sender.__class__}")
+
+            case ["selector", target]:
+                sender.send_message(f"The selector is {target}")
 
         return True
