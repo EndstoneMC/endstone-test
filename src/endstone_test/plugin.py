@@ -25,7 +25,7 @@ class EndstoneTest(Plugin):
             "usages": [
                 "/test (form)<test: FormTestAction> (message|action|modal)<type: FormTypes>",
                 "/test (sender)<test: SenderTestAction>",
-                "/test (selector)<test: SelectorTestAction> <target: target>"
+                "/test (selector)<test: SelectorTestAction> <target: target>",
             ],
             "permissions": ["endstone_test.command.test"],
         }
@@ -50,6 +50,5 @@ class EndstoneTest(Plugin):
         self.logger.info("on_disable is called!")
 
     def run_tests(self) -> None:
-        test_paths = Path(__file__).parent / "tests"
-        ret_code = pytest.main(["-s", test_paths], plugins=[FixtureInjection(self)])
+        ret_code = pytest.main(["-s", "--pyargs", "endstone_test.tests"], plugins=[FixtureInjection(self)])
         self.logger.info(f"Testing finished with exit code {ret_code}")
