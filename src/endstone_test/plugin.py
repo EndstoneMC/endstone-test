@@ -23,9 +23,9 @@ class EndstoneTest(Plugin):
         "test": {
             "description": "Run the test command",
             "usages": [
-                "/test (form)<test: FormTestAction> (message|action|modal)<type: FormTypes>",
+                "/test (form)<test: FormTestAction> (message|action|modal)<type: FormTestTypes>",
                 "/test (sender)<test: SenderTestAction>",
-                "/test (selector)<test: SelectorTestAction> <target: target>",
+                "/test (player)<test: PlayerTestAction> (toast|kick)<type: PlayerTestTypes>",
             ],
             "permissions": ["endstone_test.command.test"],
         }

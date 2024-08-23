@@ -80,7 +80,14 @@ class TestCommandExecutor(CommandExecutor):
                 else:
                     sender.send_error_message(f"Unknown sender: {sender.__class__}")
 
-            case ["selector", target]:
-                sender.send_message(f"The selector is {target}")
+            case ["player", ("toast" | "kick") as test_type]:
+                if not isinstance(sender, Player):
+                    sender.send_error_message("You must execute this command as a player")
+                    return False
+
+                if test_type == "toast":
+                    sender.send_toast("This is the title", "This is the content")
+                elif test_type == "kick":
+                    sender.kick("kick is working!")
 
         return True
