@@ -11,6 +11,11 @@ class EventListener:
         self._plugin = plugin
 
     @event_handler
+    def on_player_login(self, event: PlayerLoginEvent) -> None:
+        player = event.player
+        self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} logged in.")
+
+    @event_handler
     def on_player_join(self, event: PlayerJoinEvent) -> None:
         self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} joined the game.")
         event.player.send_message(Translatable("commands.give.success", ["Secret Item", "233", "Secret Man"]))
@@ -69,12 +74,36 @@ class EventListener:
             assert skin.cape_data.shape[2] == 4, f"Bad shape for cape data: {skin.cape_data.shape}"
 
     @event_handler
+    def on_player_quit(self, event: PlayerQuitEvent) -> None:
+        self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} left the game.")
+
+    @event_handler
+    def on_player_teleport(self, event: PlayerTeleportEvent):
+        self._plugin.logger.info(f"{event.player.name} teleported from {event.from_location} to {event.to_location}")
+
+    @event_handler
     def on_actor_death(self, event: ActorDeathEvent):
         self._plugin.logger.info(f"{event.actor.name} died.")
 
     @event_handler
+    def on_actor_removed(self, event: ActorRemoveEvent):
+        self._plugin.logger.info(f"{event.actor.name} is removed from the world.")
+
+    @event_handler
+    def on_actor_spawned(self, event: ActorSpawnEvent):
+        self._plugin.logger.info(f"{event.actor.name} just spawned.")
+
+    @event_handler
     def on_actor_teleport(self, event: ActorTeleportEvent):
         self._plugin.logger.info(f"{event.actor.name} teleported from {event.from_location} to {event.to_location}")
+
+    @event_handler
+    def on_thunder_change(self, event: ThunderChangeEvent):
+        self._plugin.logger.info(f"Thunder state changed to {event.to_thunder_state}")
+
+    @event_handler
+    def on_weather_change(self, event: WeatherChangeEvent):
+        self._plugin.logger.info(f"Weather state changed to {event.to_weather_state}")
 
     @property
     def server(self) -> Server:
