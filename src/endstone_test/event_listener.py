@@ -74,6 +74,16 @@ class EventListener:
             assert skin.cape_data.shape[2] == 4, f"Bad shape for cape data: {skin.cape_data.shape}"
 
     @event_handler
+    def on_player_interact(self, event: PlayerInteractEvent):
+        self._plugin.logger.info(
+            f"{event.player.name} interacts with block {event.block_clicked.type} "
+            f"at location {event.block_clicked.location} at face {event.block_face}")
+
+    @event_handler
+    def on_player_interact_actor(self, event: PlayerInteractActorEvent):
+        self._plugin.logger.info(f"{event.player.name} interacts with actor {event.actor}")
+
+    @event_handler
     def on_player_quit(self, event: PlayerQuitEvent) -> None:
         self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} left the game.")
 
@@ -87,15 +97,26 @@ class EventListener:
 
     @event_handler
     def on_actor_removed(self, event: ActorRemoveEvent):
-        self._plugin.logger.info(f"{event.actor.name} is removed from the world.")
+        pass
+        # self._plugin.logger.info(f"{event.actor.name} is removed from the world.")
 
     @event_handler
     def on_actor_spawned(self, event: ActorSpawnEvent):
-        self._plugin.logger.info(f"{event.actor.name} just spawned.")
+        pass
+        # self._plugin.logger.info(f"{event.actor.name} just spawned.")
 
     @event_handler
     def on_actor_teleport(self, event: ActorTeleportEvent):
         self._plugin.logger.info(f"{event.actor.name} teleported from {event.from_location} to {event.to_location}")
+
+    @event_handler
+    def on_block_break(self, event: BlockBreakEvent):
+        self._plugin.logger.info(f"{event.player.name} breaks a block {event.block.type} at {event.block.location}")
+
+    @event_handler
+    def on_block_placed(self, event: BlockPlaceEvent):
+        self._plugin.logger.info(
+            f"{event.player.name} places a block against {event.block_against.type} at {event.block.location} (was {event.block.type})")
 
     @event_handler
     def on_thunder_change(self, event: ThunderChangeEvent):
