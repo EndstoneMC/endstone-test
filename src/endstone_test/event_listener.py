@@ -58,12 +58,9 @@ class EventListener:
         event.player.exp_level = current_exp_lvl + 1
         assert event.player.exp_level == current_exp_lvl + 1
 
-        event.player.fly_speed = 0.5
-        event.player.walk_speed = 0.05
-        assert abs(event.player.fly_speed - 0.5) <= 0.00001
-        assert abs(event.player.walk_speed - 0.05) <= 0.00001
-        event.player.fly_speed = 0.05
-        event.player.walk_speed = 0.10
+        assert abs(event.player.fly_speed - 0.05) <= 0.00001
+        assert abs(event.player.walk_speed - 0.10) <= 0.00001
+        print(event.player.fly_speed, event.player.walk_speed)
 
         assert Locale.parse(event.player.locale) is not None, event.player.locale
 
@@ -76,12 +73,12 @@ class EventListener:
     @event_handler
     def on_player_interact(self, event: PlayerInteractEvent):
         self._plugin.logger.info(
-            f"{event.player.name} interacts with block {event.block_clicked.type} "
-            f"at location {event.block_clicked.location} at face {event.block_face}")
+            f"{event.player.name} interacts with {event.block.type} block using {event.item.type} item"
+            f" at location {event.block.location} on the {event.block_face} face")
 
     @event_handler
     def on_player_interact_actor(self, event: PlayerInteractActorEvent):
-        self._plugin.logger.info(f"{event.player.name} interacts with actor {event.actor}")
+        self._plugin.logger.info(f"{event.player.name} interacts with actor {event.actor.name}")
 
     @event_handler
     def on_player_quit(self, event: PlayerQuitEvent) -> None:
@@ -97,13 +94,11 @@ class EventListener:
 
     @event_handler
     def on_actor_removed(self, event: ActorRemoveEvent):
-        pass
-        # self._plugin.logger.info(f"{event.actor.name} is removed from the world.")
+        self._plugin.logger.info(f"{event.actor.name} is removed from the world.")
 
     @event_handler
     def on_actor_spawned(self, event: ActorSpawnEvent):
-        pass
-        # self._plugin.logger.info(f"{event.actor.name} just spawned.")
+        self._plugin.logger.info(f"{event.actor.name} just spawned.")
 
     @event_handler
     def on_actor_teleport(self, event: ActorTeleportEvent):
