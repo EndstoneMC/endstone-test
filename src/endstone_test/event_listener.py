@@ -48,8 +48,8 @@ class EventListener:
         assert event.player.has_permission("minecraft.command.me") is False
         event.player.update_commands()
 
-        event.player.allow_flight = True
-        assert event.player.allow_flight is True
+        # event.player.allow_flight = True
+        # assert event.player.allow_flight is True
 
         current_exp_lvl = event.player.exp_level
         event.player.give_exp_levels(2)

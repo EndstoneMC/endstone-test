@@ -51,3 +51,17 @@ def test_list_objectives(server: Server, scoreboard: Scoreboard) -> None:
     objective = scoreboard.get_objective("test_objective")
     assert objective is not None
     assert objective in scoreboard.objectives
+
+
+def test_scoreboard_value(server: Server, scoreboard: Scoreboard) -> None:
+    server.dispatch_command(server.command_sender, "scoreboard objectives add test_objective dummy")
+    objective = scoreboard.get_objective("test_objective")
+    assert objective is not None
+
+    server.dispatch_command(server.command_sender, "scoreboard players set test_player test_objective 3")
+    score = objective.get_score("test_player")
+    assert score.is_score_set
+    assert score.value == 3
+
+    score = objective.get_score("non_existent_player")
+    assert not score.is_score_set
