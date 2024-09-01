@@ -73,8 +73,7 @@ class EventListener:
     @event_handler
     def on_player_interact(self, event: PlayerInteractEvent):
         self._plugin.logger.info(
-            f"{event.player.name} interacts with {event.block.type} block using {event.item.type} item"
-            f" at location {event.block.location} on the {event.block_face} face")
+            f"{event.player.name} interacts with {event.block} (face={event.block_face}) using {event.item.type} item")
 
     @event_handler
     def on_player_interact_actor(self, event: PlayerInteractActorEvent):
@@ -106,12 +105,12 @@ class EventListener:
 
     @event_handler
     def on_block_break(self, event: BlockBreakEvent):
-        self._plugin.logger.info(f"{event.player.name} breaks a block {event.block.type} at {event.block.location}")
+        self._plugin.logger.info(f"{event.player.name} breaks a block {event.block}")
 
     @event_handler
     def on_block_placed(self, event: BlockPlaceEvent):
         self._plugin.logger.info(
-            f"{event.player.name} places a block against {event.block_against.type} at {event.block.location} (was {event.block.type})")
+            f"{event.player.name} places a block against {event.block_against} (was {event.block})")
 
     @event_handler
     def on_thunder_change(self, event: ThunderChangeEvent):

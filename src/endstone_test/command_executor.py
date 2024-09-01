@@ -90,4 +90,7 @@ class TestCommandExecutor(CommandExecutor):
                 elif test_type == "kick":
                     sender.kick("kick is working!")
 
+            case ["block", *rest]:
+                sender.send_message(str(rest))
+
         return True
