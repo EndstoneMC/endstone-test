@@ -80,6 +80,11 @@ class EventListener:
         self._plugin.logger.info(f"{event.player.name} interacts with actor {event.actor.name}")
 
     @event_handler
+    def on_player_kick(self, event: PlayerKickEvent) -> None:
+        self._plugin.logger.info(f"{event.player.name} has been kicked due to {event.reason}")
+        event.reason = ColorFormat.BOLD + event.reason
+
+    @event_handler
     def on_player_quit(self, event: PlayerQuitEvent) -> None:
         self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} left the game.")
 
