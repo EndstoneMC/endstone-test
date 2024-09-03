@@ -92,6 +92,10 @@ class EventListener:
         self._plugin.logger.info(f"{event.actor.name} died.")
 
     @event_handler
+    def on_actor_knockback(self, event: ActorKnockbackEvent):
+        self._plugin.logger.info(f"{event.actor.name} is knocked by {event.knockback}")
+
+    @event_handler
     def on_actor_removed(self, event: ActorRemoveEvent):
         self._plugin.logger.info(f"{event.actor.name} is removed from the world.")
 
