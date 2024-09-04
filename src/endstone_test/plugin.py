@@ -4,15 +4,7 @@ import pytest
 from endstone.plugin import Plugin
 
 from endstone_test.event_listener import EventListener
-
-
-class FixtureInjection:
-    def __init__(self, obj):
-        self.obj = obj
-
-    @pytest.fixture(scope='session')
-    def plugin(self):
-        return self.obj
+from endstone_test.test_helper import run_tests
 
 
 class EndstoneTest(Plugin):
@@ -45,7 +37,7 @@ class EndstoneTest(Plugin):
     def on_enable(self) -> None:
         self.logger.info("on_enable is called!")
         self.register_events(EventListener(self))
-        self.run_tests()
+        run_tests("on_load", plugin=self)
 
     def on_disable(self) -> None:
         self.logger.info("on_disable is called!")

@@ -4,6 +4,7 @@ from babel import Locale
 from endstone import ColorFormat, Server, Translatable
 from endstone.event import *
 from endstone.plugin import Plugin
+from endstone_test.test_helper import run_tests
 
 
 class EventListener:
@@ -12,18 +13,11 @@ class EventListener:
 
     @event_handler
     def on_player_login(self, event: PlayerLoginEvent) -> None:
-        player = event.player
         self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} logged in.")
 
     @event_handler
     def on_player_join(self, event: PlayerJoinEvent) -> None:
         self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} joined the game.")
-        event.player.send_message(Translatable("commands.give.success", ["Secret Item", "233", "Secret Man"]))
-        event.player.send_title("Welcome!", event.player.name)
-
-        assert event.player in self.server.online_players
-        assert self.server.get_player(event.player.name) is event.player
-        assert self.server.get_player(event.player.unique_id) is event.player
 
         self._plugin.logger.info("===========================")
         self._plugin.logger.info(f"Name: {event.player.name}")
@@ -40,35 +34,7 @@ class EventListener:
         self._plugin.logger.info(f"Device: {event.player.device_os} {event.player.device_id}")
         self._plugin.logger.info("===========================")
 
-        assert event.player.inventory.size == 36
-        assert event.player.inventory.max_stack_size == 254
-
-        assert event.player.has_permission("minecraft.command.me") is True
-        event.player.add_attachment(self._plugin, "minecraft.command.me", False)
-        assert event.player.has_permission("minecraft.command.me") is False
-        event.player.update_commands()
-
-        # event.player.allow_flight = True
-        # assert event.player.allow_flight is True
-
-        current_exp_lvl = event.player.exp_level
-        event.player.give_exp_levels(2)
-        assert event.player.exp_level == current_exp_lvl + 2
-        assert 0.0 <= event.player.exp_progress <= 1.0
-        event.player.exp_level = current_exp_lvl + 1
-        assert event.player.exp_level == current_exp_lvl + 1
-
-        assert abs(event.player.fly_speed - 0.05) <= 0.00001
-        assert abs(event.player.walk_speed - 0.10) <= 0.00001
-        print(event.player.fly_speed, event.player.walk_speed)
-
-        assert Locale.parse(event.player.locale) is not None, event.player.locale
-
-        skin = event.player.skin
-        self._plugin.logger.info(f"Skin Id: {skin.skin_id}, Cape Id: {skin.cape_id}")
-        assert skin.skin_data.shape[2] == 4, f"Bad shape for skin data: {skin.skin_data.shape}"
-        if skin.cape_data is not None:
-            assert skin.cape_data.shape[2] == 4, f"Bad shape for cape data: {skin.cape_data.shape}"
+        run_tests("on_player_join", player=event.player, plugin=self._plugin)
 
     @event_handler
     def on_player_interact(self, event: PlayerInteractEvent):
