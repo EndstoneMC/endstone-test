@@ -75,7 +75,7 @@ def test_player_game_mode(player: Player):
 def test_player_scoreboard(player: Player, server: Server):
     assert player.scoreboard is server.scoreboard
 
-    new_scoreboard = server.get_new_scoreboard()
+    new_scoreboard = server.create_scoreboard()
     player.scoreboard = new_scoreboard
     assert player.scoreboard is new_scoreboard
     assert player.scoreboard is not server.scoreboard

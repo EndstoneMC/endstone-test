@@ -59,6 +59,10 @@ class EventListener:
         self._plugin.logger.info(f"{event.player.name} teleported from {event.from_location} to {event.to_location}")
 
     @event_handler
+    def on_player_death(self, event: PlayerDeathEvent):
+        event.death_message = ColorFormat.RED + event.death_message
+
+    @event_handler
     def on_actor_death(self, event: ActorDeathEvent):
         self._plugin.logger.info(f"{event.actor.name} died.")
 
