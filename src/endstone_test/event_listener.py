@@ -89,7 +89,7 @@ class EventListener:
     @event_handler
     def on_block_placed(self, event: BlockPlaceEvent):
         self._plugin.logger.info(
-            f"{event.player.name} places a block against {event.block_against} (was {event.block})")
+            f"{event.player.name} places a {event.block_placed_state} against {event.block_against} (was {event.block})")
 
     @event_handler
     def on_thunder_change(self, event: ThunderChangeEvent):
