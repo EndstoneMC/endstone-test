@@ -9,7 +9,7 @@ def server(plugin: Plugin) -> Server:
 
 
 def test_server_version(server: Server) -> None:
-    assert server.minecraft_version == f"v{__minecraft_version__}"
+    assert server.minecraft_version == __minecraft_version__
 
 
 def test_server_level(server: Server) -> None:

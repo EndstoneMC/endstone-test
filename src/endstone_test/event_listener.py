@@ -17,7 +17,7 @@ class EventListener:
 
     @event_handler
     def on_player_join(self, event: PlayerJoinEvent) -> None:
-        self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} joined the game.")
+        event.join_message = ColorFormat.BOLD + event.join_message
 
         self._plugin.logger.info("===========================")
         self._plugin.logger.info(f"Name: {event.player.name}")
@@ -52,7 +52,7 @@ class EventListener:
 
     @event_handler
     def on_player_quit(self, event: PlayerQuitEvent) -> None:
-        self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} left the game.")
+        event.quit_message = ColorFormat.BOLD + event.quit_message
 
     @event_handler
     def on_player_teleport(self, event: PlayerTeleportEvent):
