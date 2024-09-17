@@ -39,7 +39,7 @@ class EventListener:
     @event_handler
     def on_player_interact(self, event: PlayerInteractEvent):
         self._plugin.logger.info(
-            f"{event.player.name} interacts with {event.block} (face={event.block_face}) using {event.item.type} item")
+            f"{event.player.name} interacts with {event.block} (face={event.block_face}) using {event.item} item")
 
     @event_handler
     def on_player_interact_actor(self, event: PlayerInteractActorEvent):

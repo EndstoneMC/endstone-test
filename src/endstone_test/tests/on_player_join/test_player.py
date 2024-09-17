@@ -82,3 +82,7 @@ def test_player_scoreboard(player: Player, server: Server):
 
     player.scoreboard = server.scoreboard
     assert player.scoreboard is server.scoreboard
+
+
+def test_run_command(player: Player):
+    assert player.perform_command("test sender")

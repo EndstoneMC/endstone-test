@@ -79,6 +79,7 @@ class TestCommandExecutor(CommandExecutor):
                     sender.send_message("You are the console!")
                 else:
                     sender.send_error_message(f"Unknown sender: {sender.__class__}")
+                    return False
 
             case ["player", ("toast" | "title" | "kick") as test_type]:
                 if not isinstance(sender, Player):
