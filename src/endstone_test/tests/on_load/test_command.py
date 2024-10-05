@@ -19,3 +19,8 @@ def test_command_executor(plugin: Plugin, command: PluginCommand) -> None:
     executor = TestCommandExecutor()
     command.executor = executor
     assert command.executor is executor
+
+
+def test_server_command_sender(plugin: Plugin) -> None:
+    server = plugin.server
+    assert server.command_sender.name == "Server"

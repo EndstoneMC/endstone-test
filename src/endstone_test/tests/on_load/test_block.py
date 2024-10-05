@@ -22,3 +22,10 @@ def test_create_block_data_custom_block_states(server: Server) -> None:
     assert "ground_sign_direction" in block_data.block_states
     assert block_data.block_states["ground_sign_direction"] == 8
     assert "block_light_level" not in block_data.block_states
+
+
+def test_get_block_outside_world_boundaries(server: Server) -> None:
+    with pytest.raises(RuntimeError) as exec_info:
+        server.level.dimensions[0].get_block_at(x=0, y=-256, z=0)
+
+    assert "outside of the world boundaries" in str(exec_info.value)

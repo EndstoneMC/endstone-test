@@ -100,6 +100,10 @@ class EventListener:
         self._plugin.logger.info(f"Weather state changed to {event.to_weather_state}")
 
     @event_handler
+    def on_server_command(self, event: ServerCommandEvent):
+        self._plugin.logger.info(f"{event.sender.name} executed command: {event.command}")
+
+    @event_handler
     def on_server_list_ping(self, event: ServerListPingEvent):
         event.motd = ColorFormat.BOLD + event.motd
         event.level_name = ColorFormat.GREEN + "Endstone Test" + ColorFormat.RESET
