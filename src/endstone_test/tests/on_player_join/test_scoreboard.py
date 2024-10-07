@@ -16,14 +16,19 @@ def scoreboard(server: Server) -> Scoreboard:
 @pytest.fixture(scope="function", autouse=True)
 def before_each_after_each(server: Server, scoreboard: Scoreboard):
     # Before each test run
-    server.dispatch_command(server.command_sender, "scoreboard objectives remove test_objective")
+    objective = scoreboard.get_objective("test_objective")
+    if objective is not None:
+        server.dispatch_command(server.command_sender, "scoreboard objectives remove test_objective")
+
     objective = scoreboard.get_objective("test_objective")
     assert objective is None
 
     yield
 
     # After each test run
-    server.dispatch_command(server.command_sender, "scoreboard objectives remove test_objective")
+    objective = scoreboard.get_objective("test_objective")
+    if objective is not None:
+        server.dispatch_command(server.command_sender, "scoreboard objectives remove test_objective")
     objective = scoreboard.get_objective("test_objective")
     assert objective is None
 
