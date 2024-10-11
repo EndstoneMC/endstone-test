@@ -82,3 +82,10 @@ def test_player_scoreboard(player: Player, server: Server):
 
     player.scoreboard = server.scoreboard
     assert player.scoreboard is server.scoreboard
+
+
+def test_player_tags(player: Player, server: Server):
+    server.dispatch_command(server.command_sender, f'tag "{player.name}" add test_tag')
+    assert "test_tag" in player.scoreboard_tags
+    server.dispatch_command(server.command_sender, f'tag "{player.name}" remove test_tag')
+    assert "test_tag" not in player.scoreboard_tags
