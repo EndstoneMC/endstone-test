@@ -23,7 +23,7 @@ def test_server_level(server: Server) -> None:
 
 
 def test_dispatch_command(server: Server) -> None:
-    assert server.dispatch_command(server.command_sender, "say Hello, World!")
+    assert server.dispatch_command(server.command_sender, "scriptevent endstone:test Hello World!")
 
 
 def test_max_players(server: Server) -> None:
