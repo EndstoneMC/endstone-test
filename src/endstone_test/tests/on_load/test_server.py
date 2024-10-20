@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 from endstone import Server, __minecraft_version__
-from endstone.plugin import Plugin
 from endstone.command import CommandSenderWrapper
+from endstone.plugin import Plugin
 
 
 @pytest.fixture
@@ -49,7 +49,7 @@ def test_online_mode(plugin: Plugin, server: Server) -> None:
     assert False
 
 
-def test_command_wrapper(server: Server):
+def test_command_sender_wrapper(server: Server):
     messages = []
 
     def on_message(message):

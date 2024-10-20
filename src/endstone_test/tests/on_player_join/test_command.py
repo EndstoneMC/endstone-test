@@ -1,5 +1,5 @@
-from endstone import Player, Server
 import pytest
+from endstone import Player, Server
 
 
 @pytest.fixture

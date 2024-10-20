@@ -1,7 +1,6 @@
 import json
 
 from endstone import ColorFormat, Player
-from endstone.lang import Translatable as tr
 from endstone.command import (
     Command,
     CommandExecutor,
@@ -9,6 +8,7 @@ from endstone.command import (
     ConsoleCommandSender,
 )
 from endstone.form import *
+from endstone.lang import Translatable as tr
 
 
 class TestCommandExecutor(CommandExecutor):

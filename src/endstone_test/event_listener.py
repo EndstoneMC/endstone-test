@@ -1,6 +1,7 @@
 from endstone import ColorFormat, Server
 from endstone.event import *
 from endstone.plugin import Plugin
+
 from endstone_test.test_helper import run_tests
 
 
