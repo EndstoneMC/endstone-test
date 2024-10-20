@@ -2,7 +2,7 @@ import time
 from pathlib import Path
 
 import pytest
-from endstone import Server, Translatable, __minecraft_version__
+from endstone import Server, __minecraft_version__
 from endstone.plugin import Plugin
 from endstone.command import CommandSenderWrapper
 
@@ -23,7 +23,9 @@ def test_server_level(server: Server) -> None:
 
 
 def test_dispatch_command(server: Server) -> None:
-    assert server.dispatch_command(server.command_sender, "scriptevent endstone:test Hello World!")
+    assert server.dispatch_command(
+        server.command_sender, "scriptevent endstone:test Hello World!"
+    )
 
 
 def test_max_players(server: Server) -> None:
@@ -37,11 +39,22 @@ def test_max_players(server: Server) -> None:
 
 def test_online_mode(plugin: Plugin, server: Server) -> None:
     properties_file = Path(plugin.data_folder, "..", "..", "server.properties")
-    with properties_file.open(mode='r') as file:
+    with properties_file.open(mode="r") as file:
         for line in file:
-            if line.startswith('online-mode='):
-                value = line.split('=', 1)[1].strip()
-                assert (value.lower() == 'true') == server.online_mode
+            if line.startswith("online-mode="):
+                value = line.split("=", 1)[1].strip()
+                assert (value.lower() == "true") == server.online_mode
                 return
 
     assert False
+
+
+def test_command_wrapper(server: Server):
+    messages = []
+
+    def on_message(message):
+        messages.append(server.language.translate(message, locale="zh_CN"))
+
+    sender = CommandSenderWrapper(server.command_sender, on_message=on_message)
+    assert server.dispatch_command(sender, "listd")
+    assert "玩家在线" in "".join(messages)

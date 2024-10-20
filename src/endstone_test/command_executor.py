@@ -1,29 +1,42 @@
 import json
 
 from endstone import ColorFormat, Player
-from endstone import Translatable as tr
-from endstone.command import Command, CommandExecutor, CommandSender, ConsoleCommandSender
+from endstone.lang import Translatable as tr
+from endstone.command import (
+    Command,
+    CommandExecutor,
+    CommandSender,
+    ConsoleCommandSender,
+)
 from endstone.form import *
 
 
 class TestCommandExecutor(CommandExecutor):
     __test__ = False
 
-    def on_command(self, sender: CommandSender, command: Command, args: list[str]) -> bool:
+    def on_command(
+        self, sender: CommandSender, command: Command, args: list[str]
+    ) -> bool:
         match args:
             case ["form", ("message" | "action" | "modal") as form_type]:
                 if not isinstance(sender, Player):
-                    sender.send_error_message("You must execute this command as a player")
+                    sender.send_error_message(
+                        "You must execute this command as a player"
+                    )
                     return False
 
                 if form_type == "message":
                     sender.send_form(
                         MessageForm(
                             title=tr("permissions.removeplayer"),
-                            content=tr("accessibility.list.or.two", ["Player 1", "Player 2"]),
+                            content=tr(
+                                "accessibility.list.or.two", ["Player 1", "Player 2"]
+                            ),
                             button1="Yes",
                             button2="No",
-                            on_submit=lambda player, selection: player.send_message(f"You've selected #{selection}"),
+                            on_submit=lambda player, selection: player.send_message(
+                                f"You've selected #{selection}"
+                            ),
                             on_close=lambda player: player.send_message(
                                 f"You just closed a {ColorFormat.GREEN}message form"
                             ),
@@ -33,13 +46,20 @@ class TestCommandExecutor(CommandExecutor):
                     sender.send_form(
                         ActionForm(
                             title=tr("permissions.removeplayer"),
-                            content=tr("accessibility.list.or.two", ["Player 1", "Player 2"]),
+                            content=tr(
+                                "accessibility.list.or.two", ["Player 1", "Player 2"]
+                            ),
                             buttons=[
-                                ActionForm.Button("Endstone", icon="https://avatars.githubusercontent.com/u/142812342"),
+                                ActionForm.Button(
+                                    "Endstone",
+                                    icon="https://avatars.githubusercontent.com/u/142812342",
+                                ),
                                 ActionForm.Button("Instagram"),
                                 ActionForm.Button("Twitter"),
                             ],
-                            on_submit=lambda player, selection: player.send_message(f"You've selected #{selection}"),
+                            on_submit=lambda player, selection: player.send_message(
+                                f"You've selected #{selection}"
+                            ),
                             on_close=lambda player: player.send_message(
                                 f"You just closed an {ColorFormat.GREEN}action form"
                             ),
@@ -50,10 +70,22 @@ class TestCommandExecutor(CommandExecutor):
                         ModalForm(
                             title=tr("permissions.removeplayer"),
                             controls=[
-                                Dropdown(label="This is a dropdown", options=["Apple", "Orange", "Banana"]),
+                                Dropdown(
+                                    label="This is a dropdown",
+                                    options=["Apple", "Orange", "Banana"],
+                                ),
                                 Label(text="This is a label"),
-                                Slider(label="This is a slider", min=0, max=5, step=1, default_value=2),
-                                StepSlider(label="This is a step slider", options=["Mild", "Hot", "Extra hot"]),
+                                Slider(
+                                    label="This is a slider",
+                                    min=0,
+                                    max=5,
+                                    step=1,
+                                    default_value=2,
+                                ),
+                                StepSlider(
+                                    label="This is a step slider",
+                                    options=["Mild", "Hot", "Extra hot"],
+                                ),
                                 TextInput(
                                     label="This is a text input",
                                     placeholder="This is the placehoder",
@@ -63,7 +95,9 @@ class TestCommandExecutor(CommandExecutor):
                             ],
                             submit_button="Let's GO",
                             icon="https://avatars.githubusercontent.com/u/142812342",
-                            on_submit=lambda player, data: player.send_message(f"Response {json.loads(data)}"),
+                            on_submit=lambda player, data: player.send_message(
+                                f"Response {json.loads(data)}"
+                            ),
                             on_close=lambda player: player.send_message(
                                 f"You just closed a {ColorFormat.GREEN}modal form"
                             ),
@@ -83,7 +117,9 @@ class TestCommandExecutor(CommandExecutor):
 
             case ["player", ("toast" | "title" | "kick") as test_type]:
                 if not isinstance(sender, Player):
-                    sender.send_error_message("You must execute this command as a player")
+                    sender.send_error_message(
+                        "You must execute this command as a player"
+                    )
                     return False
 
                 if test_type == "toast":

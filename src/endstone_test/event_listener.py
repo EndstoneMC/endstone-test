@@ -1,7 +1,4 @@
-import datetime
-
-from babel import Locale
-from endstone import ColorFormat, Server, Translatable
+from endstone import ColorFormat, Server
 from endstone.event import *
 from endstone.plugin import Plugin
 from endstone_test.test_helper import run_tests
@@ -13,7 +10,9 @@ class EventListener:
 
     @event_handler
     def on_player_login(self, event: PlayerLoginEvent) -> None:
-        self.server.broadcast_message(ColorFormat.YELLOW + f"{event.player.name} logged in.")
+        self.server.broadcast_message(
+            ColorFormat.YELLOW + f"{event.player.name} logged in."
+        )
 
     @event_handler
     def on_player_join(self, event: PlayerJoinEvent) -> None:
@@ -31,7 +30,9 @@ class EventListener:
         self._plugin.logger.info(f"Op status: {event.player.is_op}")
         self._plugin.logger.info(f"Ping: {event.player.ping}ms")
         self._plugin.logger.info(f"Locale: {event.player.locale}")
-        self._plugin.logger.info(f"Device: {event.player.device_os} {event.player.device_id}")
+        self._plugin.logger.info(
+            f"Device: {event.player.device_os} {event.player.device_id}"
+        )
         self._plugin.logger.info("===========================")
 
         run_tests("on_player_join", player=event.player, plugin=self._plugin)
@@ -39,15 +40,20 @@ class EventListener:
     @event_handler
     def on_player_interact(self, event: PlayerInteractEvent):
         self._plugin.logger.info(
-            f"{event.player.name} interacts with {event.block} (face={event.block_face}) using {event.item} item")
+            f"{event.player.name} interacts with {event.block} (face={event.block_face}) using {event.item} item"
+        )
 
     @event_handler
     def on_player_interact_actor(self, event: PlayerInteractActorEvent):
-        self._plugin.logger.info(f"{event.player.name} interacts with actor {event.actor.name}")
+        self._plugin.logger.info(
+            f"{event.player.name} interacts with actor {event.actor.name}"
+        )
 
     @event_handler
     def on_player_kick(self, event: PlayerKickEvent) -> None:
-        self._plugin.logger.info(f"{event.player.name} has been kicked due to {event.reason}")
+        self._plugin.logger.info(
+            f"{event.player.name} has been kicked due to {event.reason}"
+        )
         event.reason = ColorFormat.BOLD + event.reason
 
     @event_handler
@@ -56,7 +62,9 @@ class EventListener:
 
     @event_handler
     def on_player_teleport(self, event: PlayerTeleportEvent):
-        self._plugin.logger.info(f"{event.player.name} teleported from {event.from_location} to {event.to_location}")
+        self._plugin.logger.info(
+            f"{event.player.name} teleported from {event.from_location} to {event.to_location}"
+        )
 
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
@@ -80,7 +88,9 @@ class EventListener:
 
     @event_handler
     def on_actor_teleport(self, event: ActorTeleportEvent):
-        self._plugin.logger.info(f"{event.actor.name} teleported from {event.from_location} to {event.to_location}")
+        self._plugin.logger.info(
+            f"{event.actor.name} teleported from {event.from_location} to {event.to_location}"
+        )
 
     @event_handler
     def on_block_break(self, event: BlockBreakEvent):
@@ -89,7 +99,8 @@ class EventListener:
     @event_handler
     def on_block_placed(self, event: BlockPlaceEvent):
         self._plugin.logger.info(
-            f"{event.player.name} places a {event.block_placed_state} against {event.block_against} (was {event.block})")
+            f"{event.player.name} places a {event.block_placed_state} against {event.block_against} (was {event.block})"
+        )
 
     @event_handler
     def on_thunder_change(self, event: ThunderChangeEvent):
@@ -101,12 +112,20 @@ class EventListener:
 
     @event_handler
     def on_server_command(self, event: ServerCommandEvent):
-        self._plugin.logger.info(f"{event.sender.name} executed command: {event.command}")
+        self._plugin.logger.info(
+            f"{event.sender.name} executed command: {event.command}"
+        )
 
     @event_handler
     def on_server_list_ping(self, event: ServerListPingEvent):
         event.motd = ColorFormat.BOLD + event.motd
         event.level_name = ColorFormat.GREEN + "Endstone Test" + ColorFormat.RESET
+
+    @event_handler
+    def on_script_message(self, event: ScriptMessageEvent):
+        self._plugin.logger.info(
+            f"Script message received from {event.sender}: message_id={event.message_id}, message={event.message}"
+        )
 
     @property
     def server(self) -> Server:
