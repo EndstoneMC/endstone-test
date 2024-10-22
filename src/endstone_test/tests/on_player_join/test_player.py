@@ -48,6 +48,18 @@ def test_player_experience(player: Player):
     assert player.exp_progress == current_exp_progress
 
 
+def test_player_health(player: Player):
+    assert player.max_health == 20
+    current_health = player.health
+    assert 0 <= current_health <= player.max_health
+
+    player.health = 11
+    assert player.health == 11
+
+    player.health = current_health
+    assert player.health == current_health
+
+
 def test_player_attributes(player: Player):
     assert abs(player.fly_speed - 0.05) <= 0.00001
     assert abs(player.walk_speed - 0.10) <= 0.00001
