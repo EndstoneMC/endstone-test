@@ -110,7 +110,9 @@ def test_player_add_tag(player: Player, server: Server):
     assert "test_tag" in player.scoreboard_tags
 
     assert not player.add_scoreboard_tag("test_tag")
-    server.dispatch_command(server.command_sender, f'tag "{player.name}" remove test_tag')
+    server.dispatch_command(
+        server.command_sender, f'tag "{player.name}" remove test_tag'
+    )
 
 
 def test_player_remove_tag(player: Player, server: Server):

@@ -1,5 +1,6 @@
 import json
 
+import numpy as np
 from endstone import ColorFormat, Player
 from endstone.command import (
     Command,
@@ -9,6 +10,7 @@ from endstone.command import (
 )
 from endstone.form import *
 from endstone.lang import Translatable as tr
+from endstone.util import Vector
 
 
 class TestCommandExecutor(CommandExecutor):
@@ -115,7 +117,7 @@ class TestCommandExecutor(CommandExecutor):
                     sender.send_error_message(f"Unknown sender: {sender.__class__}")
                     return False
 
-            case ["player", ("toast" | "title" | "kick") as test_type]:
+            case ["player", ("toast" | "title" | "kick" | "particle") as test_type]:
                 if not isinstance(sender, Player):
                     sender.send_error_message(
                         "You must execute this command as a player"
@@ -128,6 +130,20 @@ class TestCommandExecutor(CommandExecutor):
                     sender.send_title("Welcome!", sender.name)
                 elif test_type == "kick":
                     sender.kick("kick is working!")
+                elif test_type == "particle":
+                    radius = 1.0
+                    points = 20
+                    angles = np.linspace(0, 2 * np.pi, points, endpoint=False)
+                    x_values = radius * np.cos(angles)
+                    z_values = radius * np.sin(angles)
+                    for x, z in zip(x_values, z_values):
+                        location = sender.location + Vector(x, 1, z)
+                        sender.spawn_particle(
+                            "minecraft:basic_flame_particle",
+                            location.x,
+                            location.y,
+                            location.z,
+                        )
 
             case ["block", *rest]:
                 sender.send_message(str(rest))
