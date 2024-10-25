@@ -38,7 +38,7 @@ def test_max_players(server: Server) -> None:
 
 
 def test_online_mode(plugin: Plugin, server: Server) -> None:
-    properties_file = Path(plugin.data_folder, "..", "..", "server.properties")
+    properties_file = Path(plugin.data_folder, "..", "..", "server.properties").resolve()
     with properties_file.open(mode="r") as file:
         for line in file:
             if line.startswith("online-mode="):
