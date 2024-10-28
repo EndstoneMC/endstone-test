@@ -2,6 +2,7 @@ import pytest
 from babel import Locale
 from endstone import GameMode, Player, Server
 from endstone.plugin import Plugin
+from endstone.inventory import ItemStack
 
 
 @pytest.fixture
@@ -18,6 +19,9 @@ def test_player_in_online_players(player: Player, server: Server):
 def test_player_inventory(player: Player):
     assert player.inventory.size == 36
     assert player.inventory.max_stack_size == 254
+
+    player.inventory.set_item(35, ItemStack("minecraft:clock", 1))
+    assert player.inventory.get_item(35).type == "minecraft:clock"
 
 
 def test_player_permissions(player: Player, plugin: Plugin):
