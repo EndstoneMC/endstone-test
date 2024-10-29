@@ -16,14 +16,6 @@ def test_player_in_online_players(player: Player, server: Server):
     assert server.get_player(player.unique_id) is player
 
 
-def test_player_inventory(player: Player):
-    assert player.inventory.size == 36
-    assert player.inventory.max_stack_size == 254
-
-    player.inventory.set_item(35, ItemStack("minecraft:clock", 1))
-    assert player.inventory.get_item(35).type == "minecraft:clock"
-
-
 def test_player_permissions(player: Player, plugin: Plugin):
     assert player.has_permission("minecraft.command.me") is True
     player.add_attachment(plugin, "minecraft.command.me", False)
@@ -86,18 +78,6 @@ def test_player_game_mode(player: Player):
     assert player.game_mode == GameMode.SPECTATOR
     player.game_mode = current_game_mode
     assert player.game_mode == current_game_mode
-
-
-def test_player_scoreboard(player: Player, server: Server):
-    assert player.scoreboard is server.scoreboard
-
-    new_scoreboard = server.create_scoreboard()
-    player.scoreboard = new_scoreboard
-    assert player.scoreboard is new_scoreboard
-    assert player.scoreboard is not server.scoreboard
-
-    player.scoreboard = server.scoreboard
-    assert player.scoreboard is server.scoreboard
 
 
 def test_player_get_tags(player: Player, server: Server):

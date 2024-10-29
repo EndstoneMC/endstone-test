@@ -13,8 +13,20 @@ def scoreboard(server: Server) -> Scoreboard:
     return server.scoreboard
 
 
+def test_set_scoreboard(player: Player, server: Server):
+    assert player.scoreboard is server.scoreboard
+
+    new_scoreboard = server.create_scoreboard()
+    player.scoreboard = new_scoreboard
+    assert player.scoreboard is new_scoreboard
+    assert player.scoreboard is not server.scoreboard
+
+    player.scoreboard = server.scoreboard
+    assert player.scoreboard is server.scoreboard
+
+
 def test_scoreboard_value(
-    player: Player, server: Server, scoreboard: Scoreboard
+        player: Player, server: Server, scoreboard: Scoreboard
 ) -> None:
     server.dispatch_command(
         server.command_sender, "scoreboard objectives add test_objective dummy"
