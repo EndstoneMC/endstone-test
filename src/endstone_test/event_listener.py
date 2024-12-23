@@ -73,24 +73,24 @@ class EventListener:
 
     @event_handler
     def on_actor_death(self, event: ActorDeathEvent):
-        self._plugin.logger.info(f"{event.actor.name} died.")
+        self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) died.")
 
     @event_handler
     def on_actor_knockback(self, event: ActorKnockbackEvent):
-        self._plugin.logger.info(f"{event.actor.name} is knocked by {event.knockback}")
+        self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) is knocked by {event.knockback}")
 
     @event_handler
     def on_actor_removed(self, event: ActorRemoveEvent):
-        self._plugin.logger.info(f"{event.actor.name} is removed from the world.")
+        self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) is removed from the world.")
 
     @event_handler
     def on_actor_spawned(self, event: ActorSpawnEvent):
-        self._plugin.logger.info(f"{event.actor.name} just spawned.")
+        self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) just spawned.")
 
     @event_handler
     def on_actor_teleport(self, event: ActorTeleportEvent):
         self._plugin.logger.info(
-            f"{event.actor.name} teleported from {event.from_location} to {event.to_location}"
+            f"{event.actor.name} ({event.actor.type}) teleported from {event.from_location} to {event.to_location}"
         )
 
     @event_handler
