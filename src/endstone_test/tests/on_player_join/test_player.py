@@ -62,7 +62,7 @@ def test_player_attributes(player: Player):
 
 
 def test_player_locale(player: Player):
-    assert Locale.parse(player.locale) is not None
+    assert Locale.parse(player.locale.replace("-", "_")) is not None
 
 
 def test_player_skin(player: Player):
