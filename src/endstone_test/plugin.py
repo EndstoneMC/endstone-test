@@ -1,5 +1,5 @@
 import pytest
-from endstone.plugin import Plugin
+from endstone.plugin import Plugin, PluginLoadOrder
 
 from endstone_test.event_listener import EventListener
 from endstone_test.test_helper import FixtureInjection, run_tests
@@ -8,6 +8,7 @@ from endstone_test.test_helper import FixtureInjection, run_tests
 class EndstoneTest(Plugin):
     prefix = "EndstoneTest"
     api_version = "0.5"
+    load = PluginLoadOrder.POSTWORLD
 
     commands = {
         "test": {

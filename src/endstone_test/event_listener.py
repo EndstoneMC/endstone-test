@@ -76,6 +76,11 @@ class EventListener:
         self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) died.")
 
     @event_handler
+    def on_actor_explode(self, event: ActorExplodeEvent):
+        self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) exploded.")
+        event.block_list = event.block_list[:1]
+
+    @event_handler
     def on_actor_knockback(self, event: ActorKnockbackEvent):
         self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) is knocked by {event.knockback}")
 
