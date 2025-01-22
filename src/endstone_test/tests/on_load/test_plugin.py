@@ -1,4 +1,3 @@
-from endstone.command import CommandSenderWrapper
 from endstone.plugin import Plugin
 
 from endstone_test import EndstoneTest

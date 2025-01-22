@@ -148,4 +148,7 @@ class TestCommandExecutor(CommandExecutor):
             case ["block", *rest]:
                 sender.send_message(str(rest))
 
+            case ["broadcast"]:
+                sender.server.broadcast_message(f"Hello from {sender.name}!")
+
         return True

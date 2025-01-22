@@ -62,6 +62,16 @@ class EventListener:
         event.quit_message = ColorFormat.BOLD + event.quit_message
 
     @event_handler
+    def on_player_chat(self, event: PlayerChatEvent) -> None:
+        pass
+
+    @event_handler
+    def on_player_game_mode_changed(self, event: PlayerGameModeChangeEvent) -> None:
+        self._plugin.logger.info(
+            f"{event.player.name} changed game mode to {event.new_game_mode}"
+        )
+
+    @event_handler
     def on_player_teleport(self, event: PlayerTeleportEvent):
         self._plugin.logger.info(
             f"{event.player.name} teleported from {event.from_location} to {event.to_location}"
@@ -78,19 +88,24 @@ class EventListener:
     @event_handler
     def on_actor_explode(self, event: ActorExplodeEvent):
         self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) exploded.")
-        event.block_list = event.block_list[:1]
 
     @event_handler
     def on_actor_knockback(self, event: ActorKnockbackEvent):
-        self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) is knocked by {event.knockback}")
+        self._plugin.logger.info(
+            f"{event.actor.name} ({event.actor.type}) is knocked by {event.knockback}"
+        )
 
     @event_handler
     def on_actor_removed(self, event: ActorRemoveEvent):
-        self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) is removed from the world.")
+        self._plugin.logger.info(
+            f"{event.actor.name} ({event.actor.type}) is removed from the world."
+        )
 
     @event_handler
     def on_actor_spawned(self, event: ActorSpawnEvent):
-        self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) just spawned.")
+        self._plugin.logger.info(
+            f"{event.actor.name} ({event.actor.type}) just spawned."
+        )
 
     @event_handler
     def on_actor_teleport(self, event: ActorTeleportEvent):

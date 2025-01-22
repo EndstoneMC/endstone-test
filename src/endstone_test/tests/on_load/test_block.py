@@ -1,5 +1,5 @@
 import pytest
-from endstone import Server, __minecraft_version__
+from endstone import Server
 from endstone.plugin import Plugin
 
 

@@ -18,6 +18,7 @@ class EndstoneTest(Plugin):
                 "/test (sender)<test: SenderTestAction>",
                 "/test (player)<test: PlayerTestAction> (toast|title|kick|particle)<type: PlayerTestTypes>",
                 "/test (block)<test: BlockTestAction> <block: block> [blockStates: block_states]",
+                "/test (broadcast)<test: BroadcastTestAction>",
             ],
             "permissions": ["endstone_test.command.test"],
         }

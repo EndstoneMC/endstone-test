@@ -26,7 +26,7 @@ def test_set_scoreboard(player: Player, server: Server):
 
 
 def test_scoreboard_value(
-        player: Player, server: Server, scoreboard: Scoreboard
+    player: Player, server: Server, scoreboard: Scoreboard
 ) -> None:
     server.dispatch_command(
         server.command_sender, "scoreboard objectives add test_objective dummy"

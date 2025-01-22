@@ -2,7 +2,6 @@ import pytest
 from babel import Locale
 from endstone import GameMode, Player, Server
 from endstone.plugin import Plugin
-from endstone.inventory import ItemStack
 
 
 @pytest.fixture
