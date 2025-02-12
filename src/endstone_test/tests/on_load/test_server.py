@@ -4,6 +4,7 @@ import pytest
 from endstone import Server, __minecraft_version__
 from endstone.command import CommandSenderWrapper
 from endstone.plugin import Plugin
+from endstone.level import Dimension
 
 
 @pytest.fixture
@@ -15,10 +16,15 @@ def test_server_version(server: Server) -> None:
     assert server.minecraft_version == __minecraft_version__
 
 
-def test_server_level(server: Server) -> None:
+def test_get_dimension(server: Server) -> None:
     level = server.level
+
     for dimension in level.dimensions:
         assert level.get_dimension(dimension.name) is dimension
+
+    assert level.get_dimension("overworld").type == Dimension.OVERWORLD
+    assert level.get_dimension("nether").type == Dimension.NETHER
+    assert level.get_dimension("the_end").type == Dimension.THE_END
 
 
 def test_dispatch_command(server: Server) -> None:

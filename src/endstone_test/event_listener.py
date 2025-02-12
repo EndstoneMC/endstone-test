@@ -17,6 +17,7 @@ class EventListener:
 
     @event_handler
     def on_player_join(self, event: PlayerJoinEvent) -> None:
+        self.server.logger.info(event.join_message)
         event.join_message = ColorFormat.BOLD + event.join_message
 
         self._plugin.logger.info("===========================")
@@ -39,6 +40,12 @@ class EventListener:
         run_tests("on_player_join", player=event.player, plugin=self._plugin)
 
     @event_handler
+    def on_player_emote(self, event: PlayerEmoteEvent) -> None:
+        self._plugin.logger.info(
+            f"{event.player.name} sends an emote: {event.emote_id}"
+        )
+
+    @event_handler
     def on_player_interact(self, event: PlayerInteractEvent):
         self._plugin.logger.info(
             f"{event.player.name} interacts with {event.block} (face={event.block_face}) using {event.item} item"
@@ -59,11 +66,12 @@ class EventListener:
 
     @event_handler
     def on_player_quit(self, event: PlayerQuitEvent) -> None:
+        self.server.logger.info(event.quit_message)
         event.quit_message = ColorFormat.BOLD + event.quit_message
 
     @event_handler
     def on_player_chat(self, event: PlayerChatEvent) -> None:
-        pass
+        self._plugin.logger.info(f"{event.player.name} says: {event.message}")
 
     @event_handler
     def on_player_game_mode_changed(self, event: PlayerGameModeChangeEvent) -> None:
@@ -79,11 +87,26 @@ class EventListener:
 
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
+        self._plugin.logger.info(
+            f"{event.player.name} died (source: {event.damage_source})."
+        )
         event.death_message = ColorFormat.RED + event.death_message
 
     @event_handler
+    def on_player_respawn(self, event: PlayerRespawnEvent):
+        self._plugin.logger.info(f"{event.player.name} respawned.")
+
+    @event_handler
+    def on_actor_damaged(self, event: ActorDamageEvent):
+        self._plugin.logger.info(
+            f"{event.actor.name} ({event.actor.type}) hurt (source: {event.damage_source}, damage: {event.damage})."
+        )
+
+    @event_handler
     def on_actor_death(self, event: ActorDeathEvent):
-        self._plugin.logger.info(f"{event.actor.name} ({event.actor.type}) died.")
+        self._plugin.logger.info(
+            f"{event.actor.name} ({event.actor.type}) died (source: {event.damage_source})."
+        )
 
     @event_handler
     def on_actor_explode(self, event: ActorExplodeEvent):
