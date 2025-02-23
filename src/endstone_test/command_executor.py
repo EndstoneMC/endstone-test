@@ -2,6 +2,7 @@ import json
 
 import numpy as np
 from endstone import ColorFormat, Player
+from endstone.boss import BarColor, BarStyle
 from endstone.command import (
     Command,
     CommandExecutor,
@@ -117,7 +118,7 @@ class TestCommandExecutor(CommandExecutor):
                     sender.send_error_message(f"Unknown sender: {sender.__class__}")
                     return False
 
-            case ["player", ("toast" | "title" | "kick" | "particle") as test_type]:
+            case ["player", test_type]:
                 if not isinstance(sender, Player):
                     sender.send_error_message(
                         "You must execute this command as a player"
@@ -144,6 +145,13 @@ class TestCommandExecutor(CommandExecutor):
                             location.y,
                             location.z,
                         )
+                elif test_type == "boss":
+                    boss_bar = sender.server.create_boss_bar(
+                        title="Test", color=BarColor.RED, style=BarStyle.SEGMENTED_10
+                    )
+                    boss_bar.progress = 0.75
+                    boss_bar.add_player(sender)
+                    sender.send_message("Boss bar added!")
 
             case ["block", *rest]:
                 sender.send_message(str(rest))

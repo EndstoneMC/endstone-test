@@ -171,6 +171,14 @@ class EventListener:
             f"Script message received from {event.sender}: message_id={event.message_id}, message={event.message}"
         )
 
+    # @event_handler
+    # def on_packet_receive(self, event: DataPacketReceiveEvent):
+    #     self._plugin.logger.info(f"IN:  {event.player.name} " + " ".join(f"{byte:02x}" for byte in event.data))
+
+    # @event_handler
+    # def on_packet_send(self, event: DataPacketSendEvent):
+    #     self._plugin.logger.info(f"OUT: {event.player.name} " + " ".join(f"{byte:02x}" for byte in event.data))
+
     @property
     def server(self) -> Server:
         return self._plugin.server
