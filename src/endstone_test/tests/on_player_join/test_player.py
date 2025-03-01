@@ -106,3 +106,13 @@ def test_player_remove_tag(player: Player, server: Server):
     assert "test_tag" not in player.scoreboard_tags
 
     assert not player.remove_scoreboard_tag("test_tag")
+
+
+def test_player_set_name_tag(player: Player):
+    assert player.name_tag == player.name
+
+    player.name_tag = "Test"
+    assert player.name_tag == "Test"
+
+    player.name_tag = ""
+    assert player.name_tag == ""
