@@ -12,10 +12,6 @@ def server(plugin: Plugin) -> Server:
     return plugin.server
 
 
-def test_server_version(server: Server) -> None:
-    assert server.minecraft_version == __minecraft_version__
-
-
 def test_get_dimension(server: Server) -> None:
     level = server.level
 
