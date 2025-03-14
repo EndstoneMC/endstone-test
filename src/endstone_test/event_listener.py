@@ -172,12 +172,14 @@ class EventListener:
         )
 
     # @event_handler
-    # def on_packet_receive(self, event: DataPacketReceiveEvent):
-    #     self._plugin.logger.info(f"IN:  {event.player.name} " + " ".join(f"{byte:02x}" for byte in event.data))
-
+    # def on_packet_receive(self, event: PacketReceiveEvent):
+    #     self._plugin.logger.info(
+    #         f"IN ({event.packet_id}) << {event.player.name} " + " ".join(f"{byte:02x}" for byte in event.payload))
+    #
     # @event_handler
-    # def on_packet_send(self, event: DataPacketSendEvent):
-    #     self._plugin.logger.info(f"OUT: {event.player.name} " + " ".join(f"{byte:02x}" for byte in event.data))
+    # def on_packet_send(self, event: PacketSendEvent):
+    #     self._plugin.logger.info(
+    #         f"OUT({event.packet_id}) >> {event.player.name} " + " ".join(f"{byte:02x}" for byte in event.payload))
 
     @property
     def server(self) -> Server:
