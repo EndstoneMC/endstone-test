@@ -7,7 +7,7 @@ from endstone_test.test_helper import FixtureInjection, run_tests
 
 class EndstoneTest(Plugin):
     prefix = "EndstoneTest"
-    api_version = "0.5"
+    api_version = "0.6"
     load = PluginLoadOrder.POSTWORLD
 
     commands = {
