@@ -19,6 +19,7 @@ class EndstoneTest(Plugin):
                 "/test player <toast|title|kick|particle|boss>",
                 "/test block <block: block> [blockStates: block_states]",
                 "/test broadcast",
+                "/test inv <mainhand|offhand>"
             ],
             "permissions": ["endstone_test.command.test"],
         }

@@ -18,7 +18,7 @@ class TestCommandExecutor(CommandExecutor):
     __test__ = False
 
     def on_command(
-        self, sender: CommandSender, command: Command, args: list[str]
+            self, sender: CommandSender, command: Command, args: list[str]
     ) -> bool:
         match args:
             case ["form", ("message" | "action" | "modal") as form_type]:
@@ -158,5 +158,21 @@ class TestCommandExecutor(CommandExecutor):
 
             case ["broadcast"]:
                 sender.server.broadcast_message(f"Hello from {sender.name}!")
+
+            case ["inv", slot]:
+                if not isinstance(sender, Player):
+                    sender.send_error_message(
+                        "You must execute this command as a player"
+                    )
+                    return False
+                player: Player = sender
+                if slot == "mainhand":
+                    sender.send_message(f"Main hand item is: {player.inventory.item_in_main_hand}")
+                elif slot == "offhand":
+                    sender.send_message(f"Off hand item is: {player.inventory.item_in_off_hand}")
+                else:
+                    sender.send_error_message(f"Unknown inventory slot: {slot}")
+
+                return True
 
         return True
