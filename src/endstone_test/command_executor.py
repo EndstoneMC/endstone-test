@@ -159,19 +159,31 @@ class TestCommandExecutor(CommandExecutor):
             case ["broadcast"]:
                 sender.server.broadcast_message(f"Hello from {sender.name}!")
 
-            case ["inv", slot]:
+            case ["inv", type]:
                 if not isinstance(sender, Player):
                     sender.send_error_message(
                         "You must execute this command as a player"
                     )
                     return False
                 player: Player = sender
-                if slot == "mainhand":
+                if type == "mainhand":
                     sender.send_message(f"Main hand item is: {player.inventory.item_in_main_hand}")
-                elif slot == "offhand":
+                elif type == "offhand":
                     sender.send_message(f"Off hand item is: {player.inventory.item_in_off_hand}")
+                elif type == "meta":
+                    slot = player.inventory.held_item_slot
+                    item = player.inventory.get_item(slot)
+                    if item is None:
+                        sender.send_error_message(f"Please hold the item.")
+                    else:
+                        meta = item.item_meta
+                        meta.display_name = "name"
+                        meta.lore = ["line 1", "line 2"]
+                        item.set_item_meta(meta)
+                        player.inventory.set_item(slot, item)
+                        sender.send_message(f"The item has been edited.")
                 else:
-                    sender.send_error_message(f"Unknown inventory slot: {slot}")
+                    sender.send_error_message(f"Unknown inventory test: {type}")
 
                 return True
 
