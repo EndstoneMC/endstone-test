@@ -94,10 +94,14 @@ def test_add_item_with_meta(player: Player):
     meta = item.item_meta
     assert meta.lore is None
     lore = ["A powerful blade", "of density"]
+    meta.display_name = "Excalibur"
     meta.lore = lore
+    meta.damage = 500
 
     assert item.set_item_meta(meta)
 
     player.inventory.set_item(1, item)
     item = player.inventory.get_item(1)
+    assert item.item_meta.display_name == "Excalibur"
     assert item.item_meta.lore == lore
+    assert item.item_meta.damage == 500
