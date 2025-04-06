@@ -152,6 +152,9 @@ class TestCommandExecutor(CommandExecutor):
                     boss_bar.progress = 0.75
                     boss_bar.add_player(sender)
                     sender.send_message("Boss bar added!")
+                elif test_type == "sound":
+                    sender.play_sound(sender.location, "bucket.empty_water", 1, 1)
+                    sender.send_message("Sound played")
 
             case ["block", *rest]:
                 sender.send_message(str(rest))

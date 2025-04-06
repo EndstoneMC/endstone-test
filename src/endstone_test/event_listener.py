@@ -181,7 +181,7 @@ class EventListener:
 
     @event_handler
     def on_packet_send(self, event: PacketSendEvent):
-        if event.packet_id not in [9, 10, 25, 123, 124]:
+        if event.packet_id not in [9, 10, 25, 86, 123, 124]:
             return
 
         self._plugin.logger.info(

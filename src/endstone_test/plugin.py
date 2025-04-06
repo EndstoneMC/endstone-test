@@ -16,7 +16,7 @@ class EndstoneTest(Plugin):
             "usages": [
                 "/test form <message|action|modal>",
                 "/test sender",
-                "/test player <toast|title|kick|particle|boss>",
+                "/test player <toast|title|kick|particle|boss|sound>",
                 "/test block <block: block> [blockStates: block_states]",
                 "/test broadcast",
                 "/test inv <mainhand|offhand|meta>"
