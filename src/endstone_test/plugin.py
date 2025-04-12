@@ -42,9 +42,3 @@ class EndstoneTest(Plugin):
 
     def on_disable(self) -> None:
         self.logger.info("on_disable is called!")
-
-    def run_tests(self) -> None:
-        ret_code = pytest.main(
-            ["-s", "--pyargs", "endstone_test.tests"], plugins=[FixtureInjection(self)]
-        )
-        self.logger.info(f"Testing finished with exit code {ret_code}")
