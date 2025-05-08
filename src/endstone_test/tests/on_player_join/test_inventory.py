@@ -93,7 +93,7 @@ def test_add_item_with_meta(player: Player):
     item = ItemStack("minecraft:diamond_sword", 1)
     meta = item.item_meta
     assert meta.lore is None
-    lore = ["A powerful blade", "of density"]
+    lore = ["A powerful blade", "of destiny"]
     meta.display_name = "Excalibur"
     meta.lore = lore
     meta.damage = 500
