@@ -97,7 +97,8 @@ def test_add_item_with_meta(player: Player):
     meta.display_name = "Excalibur"
     meta.lore = lore
     meta.damage = 500
-    meta.add_enchant("sharpness", 66)
+    assert not meta.add_enchant("sharpness", 66, force=False)
+    assert meta.add_enchant("sharpness", 66, force=True)
 
     assert item.set_item_meta(meta)
 
