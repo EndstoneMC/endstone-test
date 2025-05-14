@@ -18,7 +18,7 @@ class TestCommandExecutor(CommandExecutor):
     __test__ = False
 
     def on_command(
-            self, sender: CommandSender, command: Command, args: list[str]
+        self, sender: CommandSender, command: Command, args: list[str]
     ) -> bool:
         match args:
             case ["form", ("message" | "action" | "modal") as form_type]:
@@ -170,9 +170,13 @@ class TestCommandExecutor(CommandExecutor):
                     return False
                 player: Player = sender
                 if type == "mainhand":
-                    sender.send_message(f"Main hand item is: {player.inventory.item_in_main_hand}")
+                    sender.send_message(
+                        f"Main hand item is: {player.inventory.item_in_main_hand}"
+                    )
                 elif type == "offhand":
-                    sender.send_message(f"Off hand item is: {player.inventory.item_in_off_hand}")
+                    sender.send_message(
+                        f"Off hand item is: {player.inventory.item_in_off_hand}"
+                    )
                 elif type == "meta":
                     slot = player.inventory.held_item_slot
                     item = player.inventory.get_item(slot)

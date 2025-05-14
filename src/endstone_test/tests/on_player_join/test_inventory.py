@@ -17,7 +17,9 @@ def test_get_item(player: Player, server: Server):
     player.inventory.clear()
     assert player.inventory.is_empty
 
-    server.dispatch_command(server.command_sender, f'give "{player.name}" minecraft:clock')
+    server.dispatch_command(
+        server.command_sender, f'give "{player.name}" minecraft:clock'
+    )
     assert not player.inventory.is_empty
 
     item1 = player.inventory.get_item(0)
@@ -65,7 +67,9 @@ def test_set_empty_item(player: Player):
 
 def test_update_item_meta(player: Player, server: Server):
     player.inventory.clear()
-    server.dispatch_command(server.command_sender, f'give "{player.name}" minecraft:clock')
+    server.dispatch_command(
+        server.command_sender, f'give "{player.name}" minecraft:clock'
+    )
 
     # Set the lore
     item = player.inventory.contents[0]
