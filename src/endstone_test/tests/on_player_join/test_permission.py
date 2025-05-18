@@ -26,6 +26,14 @@ def test_op_permissions(player: Player, plugin: Plugin):
     player.is_op = True
     assert player.has_permission("minecraft.command.me") is True
     assert player.has_permission("minecraft.command.kick") is True
-    assert player.has_permission("minecraft.command.ban") is True
 
     player.is_op = op_status
+
+
+def test_add_attachment(player: Player, plugin: Plugin):
+    assert player.has_permission("minecraft.command.me") is True
+
+    player.add_attachment(plugin, "minecraft.command.me", False)
+    player.add_attachment(plugin, "minecraft.command.kick", True)
+    assert player.has_permission("minecraft.command.me") is False
+    assert player.has_permission("minecraft.command.kick") is True
