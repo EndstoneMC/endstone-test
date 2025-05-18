@@ -21,6 +21,7 @@ def test_get_dimension(server: Server) -> None:
     assert level.get_dimension("overworld").type == Dimension.OVERWORLD
     assert level.get_dimension("nether").type == Dimension.NETHER
     assert level.get_dimension("the_end").type == Dimension.THE_END
+    assert level.get_dimension("nonexistent") is None
 
 
 def test_dispatch_command(server: Server) -> None:
@@ -61,3 +62,7 @@ def test_command_sender_wrapper(server: Server):
     sender = CommandSenderWrapper(server.command_sender, on_message=on_message)
     assert server.dispatch_command(sender, "listd")
     assert "玩家在线" in "".join(messages)
+
+
+def test_get_player(server: Server):
+    assert server.get_player("nonexistent") is None

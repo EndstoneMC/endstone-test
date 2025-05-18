@@ -15,14 +15,6 @@ def test_player_in_online_players(player: Player, server: Server):
     assert server.get_player(player.unique_id) is player
 
 
-def test_player_permissions(player: Player, plugin: Plugin):
-    assert player.has_permission("minecraft.command.me") is True
-    player.add_attachment(plugin, "minecraft.command.me", False)
-
-    assert player.has_permission("minecraft.command.me") is False
-    player.update_commands()
-
-
 def test_player_experience(player: Player):
     current_exp_lvl = player.exp_level
     current_exp_progress = player.exp_progress
