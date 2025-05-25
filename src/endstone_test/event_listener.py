@@ -1,7 +1,7 @@
 from endstone import ColorFormat, Server
 from endstone.event import *
 from endstone.plugin import Plugin
-
+from endstone.inventory import ItemStack
 from endstone_test.test_helper import run_tests
 
 
@@ -97,6 +97,10 @@ class EventListener:
         self._plugin.logger.info(f"{event.player.name} respawned.")
 
     @event_handler
+    def on_player_item_consume(self, event: PlayerItemConsumeEvent):
+        self._plugin.logger.info(f"{event.player.name} consumes {event.item}.")
+
+    @event_handler
     def on_actor_damaged(self, event: ActorDamageEvent):
         self._plugin.logger.info(
             f"{event.actor.name} ({event.actor.type}) hurt (source: {event.damage_source}, damage: {event.damage})."
@@ -171,7 +175,7 @@ class EventListener:
             f"Script message received from {event.sender}: message_id={event.message_id}, message={event.message}"
         )
 
-    @event_handler
+    # @event_handler
     def on_packet_receive(self, event: PacketReceiveEvent):
         if event.packet_id in [135, 136, 144, 174, 175]:
             return
@@ -181,7 +185,7 @@ class EventListener:
             + " ".join(f"{byte:02x}" for byte in event.payload)
         )
 
-    @event_handler
+    # @event_handler
     def on_packet_send(self, event: PacketSendEvent):
         if event.packet_id not in [9, 10, 25, 86, 123, 124]:
             return

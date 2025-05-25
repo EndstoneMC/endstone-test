@@ -58,9 +58,9 @@ def test_player_locale(player: Player):
 
 def test_player_skin(player: Player):
     skin = player.skin
-    assert skin.skin_data.shape[2] == 4
-    if skin.cape_data is not None:
-        assert skin.cape_data.shape[2] == 4
+    assert skin.image.shape[2] == 4
+    if skin.cape_image is not None:
+        assert skin.cape_image.shape[2] == 4
 
 
 def test_player_game_mode(player: Player):
