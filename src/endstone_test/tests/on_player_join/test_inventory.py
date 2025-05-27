@@ -55,11 +55,6 @@ def test_set_item(player: Player):
     assert player.inventory.first(item) == 35
 
 
-def test_set_invalid_item(player: Player):
-    player.inventory.set_item(35, ItemStack("item_that_does_not_exist", 1))
-    assert player.inventory.get_item(35) is None
-
-
 def test_set_empty_item(player: Player):
     player.inventory.set_item(35, None)
     assert player.inventory.get_item(35) is None

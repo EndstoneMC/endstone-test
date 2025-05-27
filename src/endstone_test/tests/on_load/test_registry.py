@@ -17,3 +17,10 @@ def test_enchantment_registry(server: Server):
     assert "minecraft:protection" in registry
     assert NamespacedKey.from_string("minecraft:protection") in registry
     assert "bad_enchantment" not in registry
+
+
+def test_item_registry(server: Server):
+    registry = server.item_registry
+    assert "apple" in registry
+    assert "minecraft:apple" in registry
+    assert "non_existent_item" not in registry
