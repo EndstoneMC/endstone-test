@@ -101,6 +101,10 @@ class EventListener:
         self._plugin.logger.info(f"{event.player.name} consumes {event.item}.")
 
     @event_handler
+    def on_player_drop_item(self, event: PlayerDropItemEvent):
+        self._plugin.logger.info(f"{event.player.name} drops {event.item}.")
+
+    @event_handler
     def on_actor_damaged(self, event: ActorDamageEvent):
         self._plugin.logger.info(
             f"{event.actor.name} ({event.actor.type}) hurt (source: {event.damage_source}, damage: {event.damage})."
