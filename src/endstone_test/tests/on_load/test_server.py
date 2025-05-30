@@ -39,18 +39,29 @@ def test_max_players(server: Server) -> None:
     assert server.max_players == 100
 
 
-def test_online_mode(plugin: Plugin, server: Server) -> None:
+def test_server_properties(plugin: Plugin, server: Server) -> None:
     properties_file = Path(
         plugin.data_folder, "..", "..", "server.properties"
     ).resolve()
+    tests_passed = 0
     with properties_file.open(mode="r") as file:
         for line in file:
-            if line.startswith("online-mode="):
-                value = line.split("=", 1)[1].strip()
-                assert (value.lower() == "true") == server.online_mode
-                return
+            splits = line.strip().split("=", 1)
+            if len(splits) != 2:
+                continue
+            key, value = splits
+            match key:
+                case "online-mode":
+                    assert (value.lower() == "true") == server.online_mode
+                    tests_passed += 1
+                case "server-port":
+                    assert int(value) == server.port
+                    tests_passed += 1
+                case "server-portv6":
+                    assert int(value) == server.port_v6
+                    tests_passed += 1
 
-    assert False
+    assert tests_passed == 3
 
 
 def test_command_sender_wrapper(server: Server):
