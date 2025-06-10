@@ -14,7 +14,7 @@ def item(request, player: Player):
 
 
 @pytest.mark.parametrize("name", ["§aEpic Sword", "§bTest Blade"])
-def test_display_name(item, name):
+def test_display_name(item: ItemStack, name: str):
     meta = item.item_meta
     assert meta is not None
     meta.display_name = name
@@ -28,7 +28,7 @@ def test_display_name(item, name):
     ["One", "Two"],
     ["Alpha", "Beta", "Gamma"]
 ])
-def test_lore(item, lore):
+def test_lore(item: ItemStack, lore: list[str]):
     meta = item.item_meta
     meta.lore = lore
     item.set_item_meta(meta)
@@ -41,7 +41,7 @@ def test_lore(item, lore):
     "enchantment",
     [("sharpness", 3), ("knockback", 2)],
 )
-def test_enchantments(item, enchantment: tuple[str, int]):
+def test_enchantments(item: ItemStack, enchantment: tuple[str, int]):
     enchantment_id, level = enchantment
     meta = item.item_meta
     assert meta.add_enchant(enchantment_id, level, True)
@@ -58,7 +58,7 @@ def test_enchantments(item, enchantment: tuple[str, int]):
 
 
 @pytest.mark.parametrize("damage", [0, 5, 100])
-def test_damage(item, damage):
+def test_damage(item: ItemStack, damage: int):
     meta = item.item_meta
     meta.damage = damage
     item.set_item_meta(meta)
