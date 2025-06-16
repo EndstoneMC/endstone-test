@@ -1,13 +1,16 @@
+import textwrap
+
 from endstone import ColorFormat, Server
 from endstone.event import *
 from endstone.plugin import Plugin
-from endstone.inventory import ItemStack
 from endstone_test.test_helper import run_tests
 
 
 class EventListener:
     def __init__(self, plugin: Plugin):
         self._plugin = plugin
+        self._num_incoming_packet_logged = 0
+        self._num_outgoing_packet_logged = 0
 
     @event_handler
     def on_player_login(self, event: PlayerLoginEvent) -> None:
@@ -78,6 +81,19 @@ class EventListener:
         self._plugin.logger.info(
             f"{event.player.name} changed game mode to {event.new_game_mode}"
         )
+
+    @event_handler
+    def on_player_jump(self, event: PlayerJumpEvent):
+        self._plugin.logger.info(
+            f"{event.player.name} {ColorFormat.YELLOW}jumps{ColorFormat.RESET} from {event.from_location} to {event.to_location}"
+        )
+
+    @event_handler
+    def on_player_move(self, event: PlayerMoveEvent):
+        self._plugin.logger.info(
+            f"{event.player.name} {ColorFormat.GREEN}moves{ColorFormat.RESET} from {event.from_location} to {event.to_location}"
+        )
+        event.cancel()
 
     @event_handler
     def on_player_teleport(self, event: PlayerTeleportEvent):
@@ -181,22 +197,22 @@ class EventListener:
 
     # @event_handler
     def on_packet_receive(self, event: PacketReceiveEvent):
-        if event.packet_id in [135, 136, 144, 174, 175]:
-            return
-
+        payload = event.payload
+        payload = payload[:31] if len(payload) > 31 else payload
+        player_name = event.player.name if event.player else None
         self._plugin.logger.info(
-            f"IN ({event.packet_id}) << {event.player.name} "
-            + " ".join(f"{byte:02x}" for byte in event.payload)
+            f"IN ({event.packet_id}) >> {player_name} {event.address} "
+            + textwrap.shorten(" ".join(f"{byte:02x}" for byte in payload), 90)
         )
 
     # @event_handler
     def on_packet_send(self, event: PacketSendEvent):
-        if event.packet_id not in [9, 10, 25, 86, 123, 124]:
-            return
-
+        payload = event.payload
+        payload = payload[:30] if len(payload) > 30 else payload
+        player_name = event.player.name if event.player else None
         self._plugin.logger.info(
-            f"OUT({event.packet_id}) >> {event.player.name} "
-            + " ".join(f"{byte:02x}" for byte in event.payload)
+            f"OUT({event.packet_id}) >> {player_name} {event.address} "
+            + textwrap.shorten(" ".join(f"{byte:02x}" for byte in payload), 90)
         )
 
     @property

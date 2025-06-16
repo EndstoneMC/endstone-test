@@ -181,14 +181,14 @@ class TestCommandExecutor(CommandExecutor):
                     slot = player.inventory.held_item_slot
                     item = player.inventory.get_item(slot)
                     if item is None:
-                        sender.send_error_message(f"Please hold the item.")
+                        sender.send_error_message("Please hold the item.")
                     else:
                         meta = item.item_meta
                         meta.display_name = "name"
                         meta.lore = ["line 1", "line 2"]
                         item.set_item_meta(meta)
                         player.inventory.set_item(slot, item)
-                        sender.send_message(f"The item has been edited.")
+                        sender.send_message("The item has been edited.")
                 else:
                     sender.send_error_message(f"Unknown inventory test: {type}")
 

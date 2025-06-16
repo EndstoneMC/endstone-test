@@ -2,10 +2,13 @@ import pytest
 from endstone.inventory import ItemStack
 
 
-@pytest.mark.parametrize("type,max_durability,max_stack_size", [
-    ("minecraft:diamond_sword", 1561, 1),
-    ("minecraft:apple", 0, 64),
-])
+@pytest.mark.parametrize(
+    "type,max_durability,max_stack_size",
+    [
+        ("minecraft:diamond_sword", 1561, 1),
+        ("minecraft:apple", 0, 64),
+    ],
+)
 def test_create_item(type: str, max_durability, max_stack_size):
     item = ItemStack(type)
     assert item.type == type
@@ -26,7 +29,9 @@ def test_create_item_bad_amount(amount):
     with pytest.raises(RuntimeError) as err_info:
         _ = ItemStack("minecraft:apple", amount)
 
-    assert f"Item stack amount must be between 1 to 255, got {amount}." == str(err_info.value)
+    assert f"Item stack amount must be between 1 to 255, got {amount}." == str(
+        err_info.value
+    )
 
 
 def test_set_lore():
@@ -56,7 +61,7 @@ def test_remove_lore():
     assert item.set_item_meta(meta)
 
     meta = item.item_meta
-    assert meta.has_lore == False
+    assert not meta.has_lore
     assert meta.lore is None
 
 
@@ -70,4 +75,4 @@ def test_clear_item_meta():
 
     assert item.set_item_meta(None)
     meta = item.item_meta
-    assert meta.has_lore == False
+    assert not meta.has_lore

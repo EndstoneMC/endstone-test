@@ -24,10 +24,7 @@ def test_display_name(item: ItemStack, name: str):
     assert result == name
 
 
-@pytest.mark.parametrize("lore", [
-    ["One", "Two"],
-    ["Alpha", "Beta", "Gamma"]
-])
+@pytest.mark.parametrize("lore", [["One", "Two"], ["Alpha", "Beta", "Gamma"]])
 def test_lore(item: ItemStack, lore: list[str]):
     meta = item.item_meta
     meta.lore = lore

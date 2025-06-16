@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-from endstone import Server, __minecraft_version__
+from endstone import Server
 from endstone.command import CommandSenderWrapper
 from endstone.plugin import Plugin
 from endstone.level import Dimension

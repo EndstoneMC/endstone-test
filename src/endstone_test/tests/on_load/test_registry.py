@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import pytest
 from endstone import Server, NamespacedKey
 from endstone.plugin import Plugin
