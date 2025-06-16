@@ -93,7 +93,6 @@ class EventListener:
         self._plugin.logger.info(
             f"{event.player.name} {ColorFormat.GREEN}moves{ColorFormat.RESET} from {event.from_location} to {event.to_location}"
         )
-        event.cancel()
 
     @event_handler
     def on_player_teleport(self, event: PlayerTeleportEvent):
@@ -119,6 +118,9 @@ class EventListener:
     @event_handler
     def on_player_drop_item(self, event: PlayerDropItemEvent):
         self._plugin.logger.info(f"{event.player.name} drops {event.item}.")
+        if event.item.type == "minecraft:apple":
+            event.player.send_message("Please do not throw away the apple :)")
+            event.cancel()
 
     @event_handler
     def on_actor_damaged(self, event: ActorDamageEvent):
