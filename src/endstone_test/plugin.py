@@ -1,7 +1,16 @@
 import pytest
+from endstone import ColorFormat
+from endstone.boss import BarColor, BarStyle, BossBar
+from endstone.event import Event
 from endstone.plugin import Plugin, PluginLoadOrder
 
-from endstone_test.event_listener import EventListener
+from endstone_test.listeners import (
+    ActorEventListener,
+    BlockEventListener,
+    PlayerEventListener,
+    ServerEventListener,
+    WeatherEventListener,
+)
 from endstone_test.test_helper import FixtureInjection
 
 
@@ -16,7 +25,7 @@ class EndstoneTest(Plugin):
             "usages": [
                 "/test form <message|action|modal>",
                 "/test sender",
-                "/test player <toast|title|kick|particle|boss|sound>",
+                "/test player <toast|title|kick|particle|sound>",
                 "/test block <block: block> [blockStates: block_states]",
                 "/test broadcast",
                 "/test inv <mainhand|offhand|meta>",
@@ -32,19 +41,58 @@ class EndstoneTest(Plugin):
         }
     }
 
+    def __init__(self):
+        super().__init__()
+        self.tracked_events: dict[str, int] = {}
+        self.bossbar: BossBar | None = None
+
     def on_load(self) -> None:
         self.logger.info("on_load is called!")
 
     def on_enable(self) -> None:
         self.logger.info("on_enable is called!")
-        self.register_events(EventListener(self))
+        self.bossbar = self.server.create_boss_bar(
+            "", BarColor.GREEN, BarStyle.SEGMENTED_10
+        )
+        self.register_events(ActorEventListener(self))
+        self.register_events(BlockEventListener(self))
+        self.register_events(PlayerEventListener(self))
+        self.register_events(ServerEventListener(self))
+        self.register_events(WeatherEventListener(self))
         self.run_tests("on_load")
 
     def on_disable(self) -> None:
         self.logger.info("on_disable is called!")
+        self.bossbar.remove_all()
 
     def run_tests(self, name: str, **kwargs):
         return pytest.main(
             ["-s", "--pyargs", f"endstone_test.tests.{name}"],
             plugins=[FixtureInjection(server=self.server, plugin=self, **kwargs)],
         )
+
+    def track_event(self, name: str):
+        self.tracked_events.setdefault(name, 0)
+        self.bossbar.title = f"Events: 0/{len(self.tracked_events)}"
+        self.bossbar.progress = 0
+
+    def on_event_triggered(self, event: Event, message: str):
+        event_name = event.__class__.__name__
+        if self.tracked_events[event_name] == 0:
+            self.logger.info(ColorFormat.GREEN + f"Event {event_name} triggered!")
+            self.logger.info(message)
+
+        self.tracked_events[event_name] += 1
+        triggered_count = 0
+        next_to_trigger = None
+        for name, count in self.tracked_events.items():
+            if count == 0:
+                next_to_trigger = name
+            else:
+                triggered_count += 1
+
+        self.bossbar.progress = triggered_count / len(self.tracked_events)
+        if next_to_trigger:
+            self.bossbar.title = f"Events: {triggered_count}/{len(self.tracked_events)}, Next: {next_to_trigger}"
+        else:
+            self.bossbar.title = "All events triggered!"

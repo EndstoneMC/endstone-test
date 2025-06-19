@@ -155,13 +155,6 @@ class TestCommandExecutor(CommandExecutor):
                             location.y,
                             location.z,
                         )
-                elif test_type == "boss":
-                    boss_bar = sender.server.create_boss_bar(
-                        title="Test", color=BarColor.RED, style=BarStyle.SEGMENTED_10
-                    )
-                    boss_bar.progress = 0.75
-                    boss_bar.add_player(sender)
-                    sender.send_message("Boss bar added!")
                 elif test_type == "sound":
                     sender.play_sound(sender.location, "bucket.empty_water", 1, 1)
                     sender.send_message("Sound played")
