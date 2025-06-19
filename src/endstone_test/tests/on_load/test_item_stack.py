@@ -1,20 +1,24 @@
 import pytest
+from endstone import Server
 from endstone.inventory import ItemStack
 
 
 @pytest.mark.parametrize(
     "type_id,max_durability,max_stack_size,name",
     [
-        ("minecraft:diamond_sword", 1561, 1, "Diamond Sword"),
-        ("minecraft:apple", 0, 64, "Apple"),
+        ("minecraft:diamond_sword", 1561, 1, "钻石剑"),
+        ("minecraft:apple", 0, 64, "苹果"),
     ],
 )
-def test_create_item(type_id, max_durability, max_stack_size, name):
+def test_create_item(
+    server: Server, type_id: str, max_durability: int, max_stack_size: int, name: str
+):
     item = ItemStack(type_id)
     assert item.type == type_id
     assert item.type.id == type_id
     assert item.type.max_durability == max_durability
     assert item.type.max_stack_size == max_stack_size
+    assert server.language.translate(item.type.translation_key, locale="zh_CN") == name
 
 
 def test_create_item_bad_type():
