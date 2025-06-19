@@ -1,13 +1,49 @@
 import textwrap
+import typing
 
 from endstone import ColorFormat, Server
-from endstone.event import *
-from endstone.plugin import Plugin
-from endstone_test.test_helper import run_tests
+from endstone.event import (
+    ActorDamageEvent,
+    ActorDeathEvent,
+    ActorExplodeEvent,
+    ActorKnockbackEvent,
+    ActorRemoveEvent,
+    ActorSpawnEvent,
+    ActorTeleportEvent,
+    BlockBreakEvent,
+    BlockPlaceEvent,
+    PacketReceiveEvent,
+    PacketSendEvent,
+    PlayerChatEvent,
+    PlayerDeathEvent,
+    PlayerDropItemEvent,
+    PlayerEmoteEvent,
+    PlayerGameModeChangeEvent,
+    PlayerInteractActorEvent,
+    PlayerInteractEvent,
+    PlayerItemConsumeEvent,
+    PlayerJoinEvent,
+    PlayerJumpEvent,
+    PlayerKickEvent,
+    PlayerLoginEvent,
+    PlayerMoveEvent,
+    PlayerQuitEvent,
+    PlayerRespawnEvent,
+    PlayerTeleportEvent,
+    ScriptMessageEvent,
+    ServerCommandEvent,
+    ServerListPingEvent,
+    ThunderChangeEvent,
+    WeatherChangeEvent,
+    event_handler,
+)
+
+if typing.TYPE_CHECKING:
+    from endstone_test.plugin import EndstoneTest
 
 
 class EventListener:
-    def __init__(self, plugin: Plugin):
+    def __init__(self, plugin: "EndstoneTest"):
         self._plugin = plugin
         self._num_incoming_packet_logged = 0
         self._num_outgoing_packet_logged = 0
@@ -40,7 +76,7 @@ class EventListener:
         )
         self._plugin.logger.info("===========================")
 
-        run_tests("on_player_join", player=event.player, plugin=self._plugin)
+        self._plugin.run_tests("on_player_join", player=event.player)
 
     @event_handler
     def on_player_emote(self, event: PlayerEmoteEvent) -> None:

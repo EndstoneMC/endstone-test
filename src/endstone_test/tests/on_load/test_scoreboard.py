@@ -1,12 +1,6 @@
 import pytest
 from endstone import Server
-from endstone.plugin import Plugin
 from endstone.scoreboard import Criteria, Scoreboard
-
-
-@pytest.fixture
-def server(plugin: Plugin) -> Server:
-    return plugin.server
 
 
 @pytest.fixture

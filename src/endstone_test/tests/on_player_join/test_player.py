@@ -1,11 +1,5 @@
-import pytest
 from babel import Locale
 from endstone import GameMode, Player, Server
-
-
-@pytest.fixture
-def server(player: Player) -> Server:
-    return player.server
 
 
 def test_player_in_online_players(player: Player, server: Server):

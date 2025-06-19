@@ -1,15 +1,9 @@
 from pathlib import Path
 
-import pytest
 from endstone import Server
 from endstone.command import CommandSenderWrapper
-from endstone.plugin import Plugin
 from endstone.level import Dimension
-
-
-@pytest.fixture
-def server(plugin: Plugin) -> Server:
-    return plugin.server
+from endstone.plugin import Plugin
 
 
 def test_get_dimension(server: Server) -> None:

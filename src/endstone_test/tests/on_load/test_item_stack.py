@@ -3,16 +3,16 @@ from endstone.inventory import ItemStack
 
 
 @pytest.mark.parametrize(
-    "type,max_durability,max_stack_size",
+    "type_id,max_durability,max_stack_size,name",
     [
-        ("minecraft:diamond_sword", 1561, 1),
-        ("minecraft:apple", 0, 64),
+        ("minecraft:diamond_sword", 1561, 1, "Diamond Sword"),
+        ("minecraft:apple", 0, 64, "Apple"),
     ],
 )
-def test_create_item(type: str, max_durability, max_stack_size):
-    item = ItemStack(type)
-    assert item.type == type
-    assert item.type.id == type
+def test_create_item(type_id, max_durability, max_stack_size, name):
+    item = ItemStack(type_id)
+    assert item.type == type_id
+    assert item.type.id == type_id
     assert item.type.max_durability == max_durability
     assert item.type.max_stack_size == max_stack_size
 

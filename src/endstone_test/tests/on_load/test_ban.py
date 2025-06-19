@@ -1,11 +1,4 @@
 from endstone import Server
-from endstone.plugin import Plugin
-import pytest
-
-
-@pytest.fixture
-def server(plugin: Plugin) -> Server:
-    return plugin.server
 
 
 def test_ban(server: Server):

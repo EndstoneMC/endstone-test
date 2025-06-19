@@ -1,11 +1,4 @@
-import pytest
-from endstone import Server, NamespacedKey
-from endstone.plugin import Plugin
-
-
-@pytest.fixture
-def server(plugin: Plugin) -> Server:
-    return plugin.server
+from endstone import NamespacedKey, Server
 
 
 def test_enchantment_registry(server: Server):

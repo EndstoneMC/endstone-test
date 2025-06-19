@@ -9,7 +9,17 @@ from endstone.command import (
     CommandSender,
     ConsoleCommandSender,
 )
-from endstone.form import *
+from endstone.form import (
+    ActionForm,
+    Dropdown,
+    Label,
+    MessageForm,
+    ModalForm,
+    Slider,
+    StepSlider,
+    TextInput,
+    Toggle,
+)
 from endstone.lang import Translatable as tr
 from endstone.util import Vector
 
@@ -107,7 +117,7 @@ class TestCommandExecutor(CommandExecutor):
                         )
                     )
                 else:
-                    sender.send_error_message(f"Unknown form type: {type}")
+                    sender.send_error_message(f"Unknown form type: {form_type}")
 
             case ["sender"]:
                 if isinstance(sender, Player):

@@ -1,10 +1,4 @@
-import pytest
 from endstone import Player, Server
-
-
-@pytest.fixture
-def server(player: Player) -> Server:
-    return player.server
 
 
 def test_run_command(player: Player):

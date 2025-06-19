@@ -1,11 +1,4 @@
-import pytest
 from endstone import Server
-from endstone.plugin import Plugin
-
-
-@pytest.fixture
-def server(plugin: Plugin) -> Server:
-    return plugin.server
 
 
 def test_create_block_data_default_block_states(server: Server) -> None:

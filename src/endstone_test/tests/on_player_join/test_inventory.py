@@ -1,11 +1,5 @@
-import pytest
 from endstone import Player, Server
 from endstone.inventory import ItemStack
-
-
-@pytest.fixture
-def server(player: Player) -> Server:
-    return player.server
 
 
 def test_inventory_sizes(player: Player):

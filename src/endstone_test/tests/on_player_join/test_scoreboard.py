@@ -4,11 +4,6 @@ from endstone.scoreboard import Scoreboard
 
 
 @pytest.fixture
-def server(player: Player) -> Server:
-    return player.server
-
-
-@pytest.fixture
 def scoreboard(server: Server) -> Scoreboard:
     return server.scoreboard
 

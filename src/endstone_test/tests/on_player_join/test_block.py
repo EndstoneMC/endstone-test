@@ -1,10 +1,4 @@
-import pytest
-from endstone import Player, Server
-
-
-@pytest.fixture
-def server(player: Player) -> Server:
-    return player.server
+from endstone import Player
 
 
 def test_get_block_at_xyz(player: Player) -> None:

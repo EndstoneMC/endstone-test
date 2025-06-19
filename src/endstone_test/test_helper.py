@@ -1,5 +1,4 @@
 import pytest
-from _pytest.config import ExitCode
 
 
 class FixtureInjection:
@@ -15,10 +14,3 @@ class FixtureInjection:
             return obj
 
         return fixture_func
-
-
-def run_tests(name: str, **kwargs) -> int | ExitCode:
-    return pytest.main(
-        ["-s", "--pyargs", f"endstone_test.tests.{name}"],
-        plugins=[FixtureInjection(**kwargs)],
-    )
