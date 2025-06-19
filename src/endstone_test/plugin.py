@@ -78,9 +78,9 @@ class EndstoneTest(Plugin):
         self.bossbar.title = f"Events: 0/{len(self.tracked_events)}"
         self.bossbar.progress = 0
 
-    def on_event_triggered(self, event: Event, message: str):
+    def on_event_triggered(self, event: Event, message: str, always_log: bool = False):
         event_name = event.__class__.__name__
-        if self.tracked_events[event_name] == 0:
+        if self.tracked_events[event_name] == 0 or always_log:
             self.logger.info(ColorFormat.GREEN + f"Event {event_name} triggered!")
             self.logger.info(message)
 
