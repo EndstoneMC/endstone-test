@@ -7,6 +7,7 @@ from endstone.plugin import Plugin, PluginLoadOrder
 from endstone_test.listeners import (
     ActorEventListener,
     BlockEventListener,
+    LevelEventListener,
     PlayerEventListener,
     ServerEventListener,
     WeatherEventListener,
@@ -56,6 +57,7 @@ class EndstoneTest(Plugin):
         )
         self.register_events(ActorEventListener(self))
         self.register_events(BlockEventListener(self))
+        self.register_events(LevelEventListener(self))
         self.register_events(PlayerEventListener(self))
         self.register_events(ServerEventListener(self))
         self.register_events(WeatherEventListener(self))

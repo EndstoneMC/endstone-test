@@ -2,7 +2,6 @@ import json
 
 import numpy as np
 from endstone import ColorFormat, Player
-from endstone.boss import BarColor, BarStyle
 from endstone.command import (
     Command,
     CommandExecutor,
