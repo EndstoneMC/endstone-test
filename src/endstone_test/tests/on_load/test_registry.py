@@ -52,6 +52,8 @@ def test_get_valid(server: Server, registry: str, key: str, expected: dict):
 def test_get_invalid(server: Server, registry: str, key: str):
     reg = getattr(server, f"{registry}_registry")
     assert key not in reg
+    with pytest.raises(KeyError):
+        _ = reg[key]
 
     ns_key = NamespacedKey.from_string(key)
     assert reg.get(ns_key) is None
