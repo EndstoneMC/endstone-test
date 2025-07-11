@@ -17,6 +17,8 @@ from endstone.event import (
     PlayerQuitEvent,
     PlayerRespawnEvent,
     PlayerTeleportEvent,
+    PlayerBedEnterEvent,
+    PlayerBedLeaveEvent,
     event_handler,
 )
 
@@ -65,7 +67,8 @@ class PlayerEventListener(EventListener):
     def on_player_interact(self, event: PlayerInteractEvent):
         self.plugin.on_event_triggered(
             event,
-            f"{event.player.name} interacts with {event.block} (face={event.block_face}) using {event.item} item",
+            f"{event.player.name} interact with {event.block} (face={event.block_face}) using {event.item} item",
+            True
         )
 
     @event_handler
@@ -152,3 +155,15 @@ class PlayerEventListener(EventListener):
         )
         if event.item.type == "minecraft:golden_apple":
             event.cancel()
+
+    @event_handler
+    def on_player_enter_bed(self, event: PlayerBedEnterEvent):
+        self.plugin.on_event_triggered(
+            event, f"{event.player.name} enters bed ({event.bed}).", True
+        )
+
+    @event_handler
+    def on_player_leave_bed(self, event: PlayerBedLeaveEvent):
+        self.plugin.on_event_triggered(
+            event, f"{event.player.name} leaves bed ({event.bed}).", True
+        )
