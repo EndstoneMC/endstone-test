@@ -32,8 +32,8 @@ class PlayerEventListener(EventListener):
 
     @event_handler
     def on_player_join(self, event: PlayerJoinEvent) -> None:
-        self.plugin.on_event_triggered(event, event.join_message)
-        event.join_message = ColorFormat.BOLD + event.join_message
+        join_message = self.plugin.server.language.translate(event.join_message)
+        self.plugin.on_event_triggered(event, join_message)
 
         self.plugin.logger.info("===========================")
         self.plugin.logger.info(f"Name: {event.player.name}")
@@ -83,8 +83,8 @@ class PlayerEventListener(EventListener):
 
     @event_handler
     def on_player_quit(self, event: PlayerQuitEvent) -> None:
-        self.plugin.on_event_triggered(event, event.quit_message)
-        event.quit_message = ColorFormat.BOLD + event.quit_message
+        quit_message = self.plugin.server.language.translate(event.quit_message)
+        self.plugin.on_event_triggered(event, quit_message)
 
     @event_handler
     def on_player_chat(self, event: PlayerChatEvent) -> None:
