@@ -1,5 +1,9 @@
+from pathlib import Path
+
 from endstone import ColorFormat
 from endstone.event import (
+    PlayerBedEnterEvent,
+    PlayerBedLeaveEvent,
     PlayerChatEvent,
     PlayerDeathEvent,
     PlayerDropItemEvent,
@@ -17,10 +21,10 @@ from endstone.event import (
     PlayerQuitEvent,
     PlayerRespawnEvent,
     PlayerTeleportEvent,
-    PlayerBedEnterEvent,
-    PlayerBedLeaveEvent,
     event_handler,
 )
+from endstone.lang import Translatable
+from PIL import Image
 
 from .event_listener import EventListener
 
@@ -31,11 +35,24 @@ class PlayerEventListener(EventListener):
         self.plugin.on_event_triggered(
             event, ColorFormat.YELLOW + f"{event.player.name} logged in."
         )
+        skin = event.player.skin
+        skin_dir = Path(self.plugin.data_folder) / event.player.name
+        skin_dir.mkdir(parents=True, exist_ok=True)
+        Image.fromarray(skin.image).save(skin_dir / f"{skin.id}.png")
+        if skin.cape_image is not None:
+            Image.fromarray(skin.cape_image).save(skin_dir / f"{skin.cape_id}.png")
+
+        self.plugin.logger.warning(f"Skin ID: {skin.id}")
+        self.plugin.logger.warning(f"Cape ID: {skin.cape_id}")
 
     @event_handler
     def on_player_join(self, event: PlayerJoinEvent) -> None:
-        self.plugin.on_event_triggered(event, event.join_message)
-        event.join_message = ColorFormat.BOLD + event.join_message
+        join_message = event.join_message
+        if isinstance(join_message, Translatable):
+            join_message = self.plugin.server.language.translate(join_message)
+
+        self.plugin.on_event_triggered(event, join_message)
+        event.join_message = None
 
         self.plugin.logger.info("===========================")
         self.plugin.logger.info(f"Name: {event.player.name}")
@@ -68,7 +85,7 @@ class PlayerEventListener(EventListener):
         self.plugin.on_event_triggered(
             event,
             f"{event.player.name} interact with {event.block} (face={event.block_face}) using {event.item} item",
-            True
+            True,
         )
 
     @event_handler
@@ -86,8 +103,11 @@ class PlayerEventListener(EventListener):
 
     @event_handler
     def on_player_quit(self, event: PlayerQuitEvent) -> None:
-        self.plugin.on_event_triggered(event, event.quit_message)
-        event.quit_message = ColorFormat.BOLD + event.quit_message
+        quit_message = event.quit_message
+        if isinstance(quit_message, Translatable):
+            quit_message = self.plugin.server.language.translate(quit_message)
+        self.plugin.on_event_triggered(event, quit_message)
+        event.quit_message = None
 
     @event_handler
     def on_player_chat(self, event: PlayerChatEvent) -> None:
@@ -151,7 +171,8 @@ class PlayerEventListener(EventListener):
     @event_handler
     def on_player_pick_up_item(self, event: PlayerPickupItemEvent):
         self.plugin.on_event_triggered(
-            event, f"{event.player.name} picks up {event.item}."
+            event,
+            f"{event.player.name} picks up {event.item} ({event.item.item_stack}).",
         )
         if event.item.type == "minecraft:golden_apple":
             event.cancel()

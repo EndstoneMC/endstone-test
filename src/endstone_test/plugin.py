@@ -85,7 +85,12 @@ class EndstoneTest(Plugin):
     def on_event_triggered(self, event: Event, message: str, always_log: bool = False):
         event_name = event.__class__.__name__
         if self.tracked_events[event_name] == 0 or always_log:
-            self.logger.info(ColorFormat.GREEN + f"Event {event_name} triggered! " + ColorFormat.RESET + message)
+            self.logger.info(
+                ColorFormat.GREEN
+                + f"Event {event_name} triggered! "
+                + ColorFormat.RESET
+                + message
+            )
 
         self.tracked_events[event_name] += 1
         triggered_count = 0

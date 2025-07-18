@@ -1,9 +1,9 @@
 from endstone.event import (
     BlockBreakEvent,
     BlockCookEvent,
-    BlockPlaceEvent,
     BlockPistonExtendEvent,
     BlockPistonRetractEvent,
+    BlockPlaceEvent,
     event_handler,
 )
 from endstone.inventory import ItemStack
@@ -35,10 +35,14 @@ class BlockEventListener(EventListener):
 
     @event_handler
     def on_piston_extend(self, event: BlockPistonExtendEvent):
-        self.plugin.on_event_triggered(event, f"Piston ({event.block}) expands towards {event.direction}", True)
+        self.plugin.on_event_triggered(
+            event, f"Piston ({event.block}) expands towards {event.direction}", True
+        )
         # event.cancel()
 
     @event_handler
     def on_piston_retract(self, event: BlockPistonRetractEvent):
-        self.plugin.on_event_triggered(event, f"Piston ({event.block}) retracts towards {event.direction}", True)
+        self.plugin.on_event_triggered(
+            event, f"Piston ({event.block}) retracts towards {event.direction}", True
+        )
         # event.cancel()
