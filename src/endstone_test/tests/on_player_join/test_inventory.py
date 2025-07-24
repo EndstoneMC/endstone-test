@@ -5,6 +5,8 @@ from endstone.inventory import ItemStack
 def test_inventory_sizes(player: Player):
     assert player.inventory.size == 36
     assert player.inventory.max_stack_size == 254
+    assert player.ender_chest.size == 27
+    assert player.ender_chest.max_stack_size == 254
 
 
 def test_get_item(player: Player, server: Server):
