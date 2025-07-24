@@ -12,6 +12,7 @@ from endstone.event import (
     PlayerInteractActorEvent,
     PlayerInteractEvent,
     PlayerItemConsumeEvent,
+    PlayerItemHeldEvent,
     PlayerJoinEvent,
     PlayerJumpEvent,
     PlayerKickEvent,
@@ -20,6 +21,7 @@ from endstone.event import (
     PlayerPickupItemEvent,
     PlayerQuitEvent,
     PlayerRespawnEvent,
+    PlayerSkinChangeEvent,
     PlayerTeleportEvent,
     event_handler,
 )
@@ -84,7 +86,7 @@ class PlayerEventListener(EventListener):
     def on_player_interact(self, event: PlayerInteractEvent):
         self.plugin.on_event_triggered(
             event,
-            f"{event.player.name} interact with {event.block} (face={event.block_face}) using {event.item} item",
+            f"{event.player.name} interact ({event.action}) with {event.block} (face={event.block_face}) using {event.item} item",
             True,
         )
 
@@ -160,6 +162,13 @@ class PlayerEventListener(EventListener):
         )
 
     @event_handler
+    def on_player_item_held(self, event: PlayerItemHeldEvent):
+        self.plugin.on_event_triggered(
+            event,
+            f"{event.player.name} changes slot from {event.previous_slot} to {event.new_slot}.",
+        )
+
+    @event_handler
     def on_player_drop_item(self, event: PlayerDropItemEvent):
         self.plugin.on_event_triggered(
             event, f"{event.player.name} drops {event.item}."
@@ -174,7 +183,7 @@ class PlayerEventListener(EventListener):
             event,
             f"{event.player.name} picks up {event.item} ({event.item.item_stack}).",
         )
-        if event.item.type == "minecraft:golden_apple":
+        if event.item.item_stack.type == "minecraft:golden_apple":
             event.cancel()
 
     @event_handler
@@ -187,4 +196,10 @@ class PlayerEventListener(EventListener):
     def on_player_leave_bed(self, event: PlayerBedLeaveEvent):
         self.plugin.on_event_triggered(
             event, f"{event.player.name} leaves bed ({event.bed}).", True
+        )
+
+    @event_handler
+    def on_player_change_skin(self, event: PlayerSkinChangeEvent):
+        self.plugin.on_event_triggered(
+            event, f"{event.player.name} changes skin to {event.new_skin.id}."
         )

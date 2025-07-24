@@ -4,6 +4,7 @@ from endstone.event import (
     BlockPistonExtendEvent,
     BlockPistonRetractEvent,
     BlockPlaceEvent,
+    LeavesDecayEvent,
     event_handler,
 )
 from endstone.inventory import ItemStack
@@ -46,3 +47,7 @@ class BlockEventListener(EventListener):
             event, f"Piston ({event.block}) retracts towards {event.direction}", True
         )
         # event.cancel()
+
+    @event_handler
+    def on_leaves_decay(self, event: LeavesDecayEvent):
+        self.plugin.on_event_triggered(event, f"Leaves ({event.block}) decayed", True)

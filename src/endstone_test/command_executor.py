@@ -10,6 +10,7 @@ from endstone.command import (
 )
 from endstone.form import (
     ActionForm,
+    Button,
     Dropdown,
     Label,
     MessageForm,
@@ -62,12 +63,12 @@ class TestCommandExecutor(CommandExecutor):
                                 "accessibility.list.or.two", ["Player 1", "Player 2"]
                             ),
                             buttons=[
-                                ActionForm.Button(
+                                Button(
                                     "Endstone",
                                     icon="https://avatars.githubusercontent.com/u/142812342",
                                 ),
-                                ActionForm.Button("Instagram"),
-                                ActionForm.Button("Twitter"),
+                                Button("Instagram"),
+                                Button("Twitter"),
                             ],
                             on_submit=lambda player, selection: player.send_message(
                                 f"You've selected #{selection}"
