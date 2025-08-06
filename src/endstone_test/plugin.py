@@ -18,7 +18,7 @@ from endstone_test.test_helper import FixtureInjection
 
 class EndstoneTest(Plugin):
     prefix = "EndstoneTest"
-    api_version = "0.6"
+    api_version = "0.10"
     load = PluginLoadOrder.POSTWORLD
 
     commands = {
@@ -63,6 +63,7 @@ class EndstoneTest(Plugin):
         self.register_events(PlayerEventListener(self))
         self.register_events(ServerEventListener(self))
         self.register_events(WeatherEventListener(self))
+        self.register_events(self)
         self.run_tests("on_load")
 
         self.get_command("test").executor = TestCommandExecutor()
