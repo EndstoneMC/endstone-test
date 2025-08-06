@@ -54,7 +54,7 @@ class PlayerEventListener(EventListener):
             join_message = self.plugin.server.language.translate(join_message)
 
         self.plugin.on_event_triggered(event, join_message)
-        event.join_message = None
+        # event.join_message = None
 
         self.plugin.logger.info("===========================")
         self.plugin.logger.info(f"Name: {event.player.name}")
@@ -109,7 +109,7 @@ class PlayerEventListener(EventListener):
         if isinstance(quit_message, Translatable):
             quit_message = self.plugin.server.language.translate(quit_message)
         self.plugin.on_event_triggered(event, quit_message)
-        event.quit_message = None
+        # event.quit_message = None
 
     @event_handler
     def on_player_chat(self, event: PlayerChatEvent) -> None:
@@ -146,10 +146,10 @@ class PlayerEventListener(EventListener):
 
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
+        death_message = self.server.language.translate(event.death_message)
         self.plugin.on_event_triggered(
-            event, f"{event.player.name} died (source: {event.damage_source})."
+            event, f"{death_message} (source: {event.damage_source})."
         )
-        event.death_message = ColorFormat.RED + event.death_message
 
     @event_handler
     def on_player_respawn(self, event: PlayerRespawnEvent):
