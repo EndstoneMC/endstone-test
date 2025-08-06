@@ -101,3 +101,5 @@ def test_player_set_name_tag(player: Player):
 
     player.name_tag = ""
     assert player.name_tag == ""
+
+    player.name_tag = player.name
