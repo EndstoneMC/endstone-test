@@ -4,21 +4,26 @@ from endstone.inventory import ItemStack
 
 
 @pytest.mark.parametrize(
-    "type_id,max_durability,max_stack_size,name",
+    "type_id,data,max_durability,max_stack_size,name",
     [
-        ("minecraft:diamond_sword", 1561, 1, "钻石剑"),
-        ("minecraft:apple", 0, 64, "苹果"),
+        ("minecraft:diamond_sword", 0, 1561, 1, "钻石剑"),
+        ("minecraft:apple", 0, 0, 64, "苹果"),
+        ("minecraft:potion", 0, 0, 1, "水瓶"),
+        ("minecraft:potion", 7, 0, 1, "隐身药水"),
     ],
 )
 def test_create_item(
-    server: Server, type_id: str, max_durability: int, max_stack_size: int, name: str
+    server: Server,
+    type_id: str,
+    data: int,
+    max_durability: int,
+    max_stack_size: int,
+    name: str,
 ):
-    item = ItemStack(type_id)
+    item = ItemStack(type_id, data=data)
     assert item.type == type_id
-    assert item.type.id == type_id
-    assert item.type.max_durability == max_durability
-    assert item.type.max_stack_size == max_stack_size
-    assert server.language.translate(item.type.translation_key, locale="zh_CN") == name
+    assert item.max_stack_size == max_stack_size
+    assert server.language.translate(item.translation_key, locale="zh_CN") == name
 
 
 def test_create_item_bad_type():

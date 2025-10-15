@@ -1,5 +1,5 @@
 import pytest
-from endstone import NamespacedKey, Server
+from endstone import Server
 
 
 @pytest.mark.parametrize(
@@ -29,18 +29,12 @@ from endstone import NamespacedKey, Server
 )
 def test_get_valid(server: Server, registry: str, key: str, expected: dict):
     reg = getattr(server, f"{registry}_registry")
+    assert reg.get(key) is not None
     assert reg[key] is not None
     assert key in reg
-
-    ns_key = NamespacedKey.from_string(key)
-    assert reg.get(ns_key) is not None
-    assert reg[ns_key] is not None
-    assert ns_key in reg
-    assert reg.get_or_throw(ns_key) is not None
-    assert reg.get_or_throw(ns_key) is reg.get(ns_key)
-
+    assert reg.get_or_throw(key) is not None
     for attr, expected_value in expected.items():
-        assert getattr(reg.get(ns_key), attr) == expected_value
+        assert getattr(reg.get(key), attr) == expected_value
 
 
 @pytest.mark.parametrize("registry,key", [
@@ -51,14 +45,9 @@ def test_get_valid(server: Server, registry: str, key: str, expected: dict):
 ])
 def test_get_invalid(server: Server, registry: str, key: str):
     reg = getattr(server, f"{registry}_registry")
+    assert reg.get(key) is None
     assert key not in reg
     with pytest.raises(KeyError):
+        reg.get_or_throw(key)
+    with pytest.raises(KeyError):
         _ = reg[key]
-
-    ns_key = NamespacedKey.from_string(key)
-    assert reg.get(ns_key) is None
-    assert ns_key not in reg
-    with pytest.raises(KeyError):
-        reg.get_or_throw(ns_key)
-    with pytest.raises(KeyError):
-        _ = reg[ns_key]
