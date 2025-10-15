@@ -1,6 +1,7 @@
 import json
 
 import numpy as np
+from PIL import Image
 from endstone import ColorFormat, Player
 from endstone.command import (
     Command,
@@ -20,15 +21,24 @@ from endstone.form import (
     TextInput,
     Toggle,
 )
+from endstone.inventory import ItemStack, MapMeta
 from endstone.lang import Translatable as tr
+from endstone.map import MapView
+from endstone.plugin import Plugin
 from endstone.util import Vector
+
+from endstone_test.image_renderer import ImageRenderer
 
 
 class TestCommandExecutor(CommandExecutor):
     __test__ = False
 
+    def __init__(self, plugin: Plugin):
+        CommandExecutor.__init__(self)
+        self.plugin = plugin
+
     def on_command(
-            self, sender: CommandSender, command: Command, args: list[str]
+        self, sender: CommandSender, command: Command, args: list[str]
     ) -> bool:
         match args:
             case ["form", ("message" | "action" | "modal") as form_type]:
@@ -196,6 +206,33 @@ class TestCommandExecutor(CommandExecutor):
                 else:
                     sender.send_error_message(f"Unknown inventory test: {type}")
 
+                return True
+
+            case ["map"]:
+                if not isinstance(sender, Player):
+                    sender.send_error_message(
+                        "You must execute this command as a player"
+                    )
+                    return False
+
+                view = sender.server.create_map(sender.dimension)
+                for renderer in view.renderers:
+                    view.remove_renderer(renderer)
+
+                view.scale = MapView.Scale.NORMAL
+                view.add_renderer(
+                    ImageRenderer(Image.open(self.plugin.data_folder / "lena.png"))
+                )
+
+                item = ItemStack("minecraft:filled_map", 1)
+                meta = item.item_meta
+                assert isinstance(meta, MapMeta), "Item is not a map"
+                meta.display_name = "Lena"
+                meta.map_view = view
+                item.set_item_meta(meta)
+
+                sender.inventory.add_item(item)
+                sender.send_message("Map added to inventory")
                 return True
 
         return True

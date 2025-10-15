@@ -16,7 +16,7 @@ def test_command(plugin: Plugin, command: PluginCommand) -> None:
 
 def test_command_executor(plugin: Plugin, command: PluginCommand) -> None:
     assert command.executor is plugin
-    command.executor = TestCommandExecutor()
+    command.executor = TestCommandExecutor(plugin)
     assert command.executor is not plugin
     assert isinstance(command.executor, TestCommandExecutor)
     command.executor = plugin

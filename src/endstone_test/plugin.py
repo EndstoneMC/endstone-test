@@ -31,6 +31,7 @@ class EndstoneTest(Plugin):
                 "/test block <block: block> [blockStates: block_states]",
                 "/test broadcast",
                 "/test inv <mainhand|offhand|meta>",
+                "/test map",
             ],
             "permissions": ["endstone_test.command.test"],
         }
@@ -66,8 +67,7 @@ class EndstoneTest(Plugin):
         self.register_events(WeatherEventListener(self))
         self.register_events(self)
         self.run_tests("on_load")
-
-        self.get_command("test").executor = TestCommandExecutor()
+        self.get_command("test").executor = TestCommandExecutor(self)
 
     def on_disable(self) -> None:
         self.logger.info("on_disable is called!")
