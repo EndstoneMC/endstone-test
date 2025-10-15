@@ -35,6 +35,11 @@ def test_add_item(player: Player):
     assert item.type == "minecraft:clock"
     assert item.amount == 7
 
+    player.inventory.add_item(ItemStack("minecraft:cobblestone", 2))
+    item = player.inventory.get_item(1)
+    assert item.type == "minecraft:cobblestone"
+    assert item.amount == 2
+
 
 def test_set_item(player: Player):
     player.inventory.set_item(35, ItemStack("minecraft:diamond", 7))

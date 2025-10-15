@@ -1,5 +1,9 @@
+from pathlib import Path
+
 from endstone import ColorFormat
 from endstone.event import (
+    PlayerBedEnterEvent,
+    PlayerBedLeaveEvent,
     PlayerChatEvent,
     PlayerDeathEvent,
     PlayerDropItemEvent,
@@ -8,6 +12,7 @@ from endstone.event import (
     PlayerInteractActorEvent,
     PlayerInteractEvent,
     PlayerItemConsumeEvent,
+    PlayerItemHeldEvent,
     PlayerJoinEvent,
     PlayerJumpEvent,
     PlayerKickEvent,
@@ -16,9 +21,12 @@ from endstone.event import (
     PlayerPickupItemEvent,
     PlayerQuitEvent,
     PlayerRespawnEvent,
+    PlayerSkinChangeEvent,
     PlayerTeleportEvent,
     event_handler,
 )
+from endstone.lang import Translatable
+from PIL import Image
 
 from .event_listener import EventListener
 
@@ -29,11 +37,24 @@ class PlayerEventListener(EventListener):
         self.plugin.on_event_triggered(
             event, ColorFormat.YELLOW + f"{event.player.name} logged in."
         )
+        skin = event.player.skin
+        skin_dir = Path(self.plugin.data_folder) / event.player.name
+        skin_dir.mkdir(parents=True, exist_ok=True)
+        Image.fromarray(skin.image).save(skin_dir / f"{skin.id}.png")
+        if skin.cape_image is not None:
+            Image.fromarray(skin.cape_image).save(skin_dir / f"{skin.cape_id}.png")
+
+        self.plugin.logger.warning(f"Skin ID: {skin.id}")
+        self.plugin.logger.warning(f"Cape ID: {skin.cape_id}")
 
     @event_handler
     def on_player_join(self, event: PlayerJoinEvent) -> None:
-        join_message = self.plugin.server.language.translate(event.join_message)
+        join_message = event.join_message
+        if isinstance(join_message, Translatable):
+            join_message = self.plugin.server.language.translate(join_message)
+
         self.plugin.on_event_triggered(event, join_message)
+        # event.join_message = None
 
         self.plugin.logger.info("===========================")
         self.plugin.logger.info(f"Name: {event.player.name}")
@@ -65,7 +86,8 @@ class PlayerEventListener(EventListener):
     def on_player_interact(self, event: PlayerInteractEvent):
         self.plugin.on_event_triggered(
             event,
-            f"{event.player.name} interacts with {event.block} (face={event.block_face}) using {event.item} item",
+            f"{event.player.name} interact ({event.action}) with {event.block} (face={event.block_face}) using {event.item} item",
+            True,
         )
 
     @event_handler
@@ -83,8 +105,11 @@ class PlayerEventListener(EventListener):
 
     @event_handler
     def on_player_quit(self, event: PlayerQuitEvent) -> None:
-        quit_message = self.plugin.server.language.translate(event.quit_message)
+        quit_message = event.quit_message
+        if isinstance(quit_message, Translatable):
+            quit_message = self.plugin.server.language.translate(quit_message)
         self.plugin.on_event_triggered(event, quit_message)
+        # event.quit_message = None
 
     @event_handler
     def on_player_chat(self, event: PlayerChatEvent) -> None:
@@ -121,10 +146,10 @@ class PlayerEventListener(EventListener):
 
     @event_handler
     def on_player_death(self, event: PlayerDeathEvent):
+        death_message = self.server.language.translate(event.death_message)
         self.plugin.on_event_triggered(
-            event, f"{event.player.name} died (source: {event.damage_source})."
+            event, f"{death_message} (source: {event.damage_source})."
         )
-        event.death_message = ColorFormat.RED + event.death_message
 
     @event_handler
     def on_player_respawn(self, event: PlayerRespawnEvent):
@@ -134,6 +159,13 @@ class PlayerEventListener(EventListener):
     def on_player_item_consume(self, event: PlayerItemConsumeEvent):
         self.plugin.on_event_triggered(
             event, f"{event.player.name} consumes {event.item}."
+        )
+
+    @event_handler
+    def on_player_item_held(self, event: PlayerItemHeldEvent):
+        self.plugin.on_event_triggered(
+            event,
+            f"{event.player.name} changes slot from {event.previous_slot} to {event.new_slot}.",
         )
 
     @event_handler
@@ -148,7 +180,26 @@ class PlayerEventListener(EventListener):
     @event_handler
     def on_player_pick_up_item(self, event: PlayerPickupItemEvent):
         self.plugin.on_event_triggered(
-            event, f"{event.player.name} picks up {event.item}."
+            event,
+            f"{event.player.name} picks up {event.item} ({event.item.item_stack}).",
         )
-        if event.item.type == "minecraft:golden_apple":
+        if event.item.item_stack.type == "minecraft:golden_apple":
             event.cancel()
+
+    @event_handler
+    def on_player_enter_bed(self, event: PlayerBedEnterEvent):
+        self.plugin.on_event_triggered(
+            event, f"{event.player.name} enters bed ({event.bed}).", True
+        )
+
+    @event_handler
+    def on_player_leave_bed(self, event: PlayerBedLeaveEvent):
+        self.plugin.on_event_triggered(
+            event, f"{event.player.name} leaves bed ({event.bed}).", True
+        )
+
+    @event_handler
+    def on_player_change_skin(self, event: PlayerSkinChangeEvent):
+        self.plugin.on_event_triggered(
+            event, f"{event.player.name} changes skin to {event.new_skin.id}."
+        )

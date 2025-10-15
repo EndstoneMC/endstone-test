@@ -10,6 +10,7 @@ from endstone.command import (
 )
 from endstone.form import (
     ActionForm,
+    Button,
     Dropdown,
     Label,
     MessageForm,
@@ -27,7 +28,7 @@ class TestCommandExecutor(CommandExecutor):
     __test__ = False
 
     def on_command(
-        self, sender: CommandSender, command: Command, args: list[str]
+            self, sender: CommandSender, command: Command, args: list[str]
     ) -> bool:
         match args:
             case ["form", ("message" | "action" | "modal") as form_type]:
@@ -62,12 +63,12 @@ class TestCommandExecutor(CommandExecutor):
                                 "accessibility.list.or.two", ["Player 1", "Player 2"]
                             ),
                             buttons=[
-                                ActionForm.Button(
+                                Button(
                                     "Endstone",
                                     icon="https://avatars.githubusercontent.com/u/142812342",
                                 ),
-                                ActionForm.Button("Instagram"),
-                                ActionForm.Button("Twitter"),
+                                Button("Instagram"),
+                                Button("Twitter"),
                             ],
                             on_submit=lambda player, selection: player.send_message(
                                 f"You've selected #{selection}"
@@ -186,6 +187,7 @@ class TestCommandExecutor(CommandExecutor):
                         sender.send_error_message("Please hold the item.")
                     else:
                         meta = item.item_meta
+                        meta.add_enchant("sharpness", 10, True)
                         meta.display_name = "name"
                         meta.lore = ["line 1", "line 2"]
                         item.set_item_meta(meta)

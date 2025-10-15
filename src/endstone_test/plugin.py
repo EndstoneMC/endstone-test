@@ -4,6 +4,7 @@ from endstone.boss import BarColor, BarStyle, BossBar
 from endstone.event import Event
 from endstone.plugin import Plugin, PluginLoadOrder
 
+from endstone_test.command_executor import TestCommandExecutor
 from endstone_test.listeners import (
     ActorEventListener,
     BlockEventListener,
@@ -17,7 +18,7 @@ from endstone_test.test_helper import FixtureInjection
 
 class EndstoneTest(Plugin):
     prefix = "EndstoneTest"
-    api_version = "0.6"
+    api_version = "0.10"
     load = PluginLoadOrder.POSTWORLD
 
     commands = {
@@ -53,6 +54,7 @@ class EndstoneTest(Plugin):
 
     def on_enable(self) -> None:
         self.logger.info("on_enable is called!")
+        self.logger.info(f"protocol version: {self.server.protocol_version}")
         self.bossbar = self.server.create_boss_bar(
             "", BarColor.GREEN, BarStyle.SEGMENTED_10
         )
@@ -62,7 +64,10 @@ class EndstoneTest(Plugin):
         self.register_events(PlayerEventListener(self))
         self.register_events(ServerEventListener(self))
         self.register_events(WeatherEventListener(self))
+        self.register_events(self)
         self.run_tests("on_load")
+
+        self.get_command("test").executor = TestCommandExecutor()
 
     def on_disable(self) -> None:
         self.logger.info("on_disable is called!")
@@ -82,8 +87,12 @@ class EndstoneTest(Plugin):
     def on_event_triggered(self, event: Event, message: str, always_log: bool = False):
         event_name = event.__class__.__name__
         if self.tracked_events[event_name] == 0 or always_log:
-            self.logger.info(ColorFormat.GREEN + f"Event {event_name} triggered!")
-            self.logger.info(message)
+            self.logger.info(
+                ColorFormat.GREEN
+                + f"Event {event_name} triggered! "
+                + ColorFormat.RESET
+                + message
+            )
 
         self.tracked_events[event_name] += 1
         triggered_count = 0

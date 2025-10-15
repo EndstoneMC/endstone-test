@@ -1,3 +1,4 @@
+from endstone.actor import Item
 from endstone.event import (
     ActorDamageEvent,
     ActorDeathEvent,
@@ -49,7 +50,9 @@ class ActorEventListener(EventListener):
     @event_handler
     def on_actor_spawned(self, event: ActorSpawnEvent):
         self.plugin.on_event_triggered(
-            event, f"{event.actor.name} ({event.actor.type}) just spawned."
+            event,
+            f"{event.actor.name} ({event.actor.type}) just spawned - {event.actor.__class__}.",
+            always_log=isinstance(event.actor, Item),
         )
 
     @event_handler
