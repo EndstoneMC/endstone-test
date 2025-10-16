@@ -51,7 +51,7 @@ class EndstoneTest(Plugin):
 
     def on_load(self) -> None:
         self.logger.info("on_load is called!")
-        self.save_resources("lena.png")
+        self.save_resources("lena.png", replace=True)
 
     def on_enable(self) -> None:
         self.logger.info("on_enable is called!")

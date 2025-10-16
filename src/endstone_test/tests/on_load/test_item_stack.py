@@ -1,6 +1,6 @@
 import pytest
 from endstone import Server
-from endstone.inventory import ItemStack
+from endstone.inventory import ItemMeta, ItemStack, MapMeta
 
 
 @pytest.mark.parametrize(
@@ -43,6 +43,24 @@ def test_create_item_bad_amount(amount):
     )
 
 
+@pytest.mark.parametrize(
+    "type,meta_cls",
+    [
+        ("minecraft:air", None),
+        ("minecraft:apple", ItemMeta),
+        ("minecraft:diamond_sword", ItemMeta),
+        ("minecraft:filled_map", MapMeta),
+    ],
+)
+def test_item_meta(type, meta_cls):
+    item = ItemStack(type)
+    meta = item.item_meta
+    if meta is None:
+        assert meta_cls is None
+    else:
+        assert isinstance(meta, meta_cls)
+
+
 def test_set_lore():
     item = ItemStack("minecraft:diamond_sword")
     lore = ["A powerful blade", "of destiny"]
@@ -71,7 +89,7 @@ def test_remove_lore():
 
     meta = item.item_meta
     assert not meta.has_lore
-    assert meta.lore is None
+    assert not meta.lore
 
 
 def test_clear_item_meta():

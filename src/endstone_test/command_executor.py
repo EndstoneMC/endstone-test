@@ -1,7 +1,6 @@
 import json
 
 import numpy as np
-from PIL import Image
 from endstone import ColorFormat, Player
 from endstone.command import (
     Command,
@@ -26,6 +25,7 @@ from endstone.lang import Translatable as tr
 from endstone.map import MapView
 from endstone.plugin import Plugin
 from endstone.util import Vector
+from PIL import Image
 
 from endstone_test.image_renderer import ImageRenderer
 

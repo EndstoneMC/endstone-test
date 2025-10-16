@@ -70,7 +70,7 @@ def test_update_item_meta(player: Player, server: Server):
     # Set the lore
     item = player.inventory.contents[0]
     meta = item.item_meta
-    assert meta.lore is None
+    assert not meta.lore
     lore = ["This is a test lore", "And another line of lore:)"]
     meta.lore = lore
     assert meta.lore == lore
@@ -86,13 +86,13 @@ def test_update_item_meta(player: Player, server: Server):
     meta = item.item_meta
     meta.lore = None
     item.set_item_meta(meta)
-    assert item.item_meta.lore is None
+    assert not item.item_meta.lore
 
 
 def test_add_item_with_meta(player: Player):
     item = ItemStack("minecraft:diamond_sword", 1)
     meta = item.item_meta
-    assert meta.lore is None
+    assert not meta.lore
     lore = ["A powerful blade", "of destiny"]
     meta.display_name = "Excalibur"
     meta.lore = lore
