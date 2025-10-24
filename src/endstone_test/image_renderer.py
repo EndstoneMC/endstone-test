@@ -9,6 +9,11 @@ class ImageRenderer(MapRenderer):
         MapRenderer.__init__(self, is_contextual=False)
         self.image = image.convert("RGBA")
         self.image.thumbnail((128, 128), Resampling.LANCZOS)
+        self.rendered = False
 
     def render(self, view: MapView, canvas: MapCanvas, player: Player) -> None:
+        if self.rendered:
+            return
+
         canvas.draw_image(0, 0, np.array(self.image))
+        self.rendered = True
