@@ -1,5 +1,9 @@
 from endstone import Player, Server
-from endstone.inventory import ItemStack
+from endstone.inventory import ItemStack, MapMeta
+from endstone.plugin import Plugin
+from PIL import Image
+
+from endstone_test.image_renderer import ImageRenderer
 
 
 def test_inventory_sizes(player: Player):
@@ -110,3 +114,35 @@ def test_add_item_with_meta(player: Player):
     assert item.item_meta.has_enchant("sharpness")
     assert item.item_meta.get_enchant_level("sharpness") == 66
     assert not item.item_meta.has_enchant("protection")
+
+
+def test_add_map(player: Player, server: Server, plugin: Plugin):
+    item = ItemStack("minecraft:filled_map", 1)
+    meta = item.item_meta
+    assert isinstance(meta, MapMeta), "Item is not a map"
+
+    view = server.create_map(player.dimension)
+    assert view is not None, "Failed to create map"
+    assert view.id != -1, "Invalid map ID"
+
+    assert len(view.renderers) == 1, "Map view should have the vanilla renderer"
+    for renderer in view.renderers:
+        assert view.remove_renderer(renderer) is True, "Failed to remove renderer"
+
+    assert len(view.renderers) == 0, "Map view should have no renderers"
+    view.add_renderer(ImageRenderer(Image.open(plugin.data_folder / "lena.png")))
+    assert len(view.renderers) == 1, "Map view should have one custom renderer"
+
+    meta.map_view = view
+    assert item.set_item_meta(meta)
+
+    player.inventory.set_item(2, item)
+    item = player.inventory.get_item(2)
+
+    meta = item.item_meta
+    assert item.type == "minecraft:filled_map", "Item is not a map"
+    assert isinstance(meta, MapMeta), "Item is not a map"
+    assert meta.map_id != -1, "Invalid map ID"
+    assert meta.map_id == view.id, "Map ID does not match"
+    assert meta.map_view is not None, "Map view is not set"
+    assert meta.map_view.id == view.id, "Map ID does not match"

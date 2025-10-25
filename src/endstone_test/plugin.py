@@ -31,7 +31,6 @@ class EndstoneTest(Plugin):
                 "/test block <block: block> [blockStates: block_states]",
                 "/test broadcast",
                 "/test inv <mainhand|offhand|meta>",
-                "/test map",
             ],
             "permissions": ["endstone_test.command.test"],
         }

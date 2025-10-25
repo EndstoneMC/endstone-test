@@ -2,6 +2,7 @@ import textwrap
 
 from endstone import ColorFormat
 from endstone.event import (
+    MapInitializeEvent,
     PacketReceiveEvent,
     PacketSendEvent,
     ScriptMessageEvent,
@@ -53,4 +54,12 @@ class ServerEventListener(EventListener):
             event,
             f"OUT({event.packet_id}) >> {player_name} {event.address} "
             + textwrap.shorten(" ".join(f"{byte:02x}" for byte in payload), 90),
+        )
+
+    @event_handler
+    def on_map_init(self, event: MapInitializeEvent):
+        self.plugin.on_event_triggered(
+            event,
+            f"MapInitializeEvent is called. MapView(id={event.map.id}, scale={event.map.scale}, center_x={event.map.center_x}, center_z={event.map.center_z}).",
+            always_log=True,
         )
