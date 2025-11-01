@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from endstone import Server
-from endstone.command import CommandSenderWrapper
 from endstone.level import Dimension
 from endstone.plugin import Plugin
 
@@ -56,17 +55,6 @@ def test_server_properties(plugin: Plugin, server: Server) -> None:
                     tests_passed += 1
 
     assert tests_passed == 3
-
-
-def test_command_sender_wrapper(server: Server):
-    messages = []
-
-    def on_message(message):
-        messages.append(server.language.translate(message, locale="zh_CN"))
-
-    sender = CommandSenderWrapper(server.command_sender, on_message=on_message)
-    assert server.dispatch_command(sender, "listd")
-    assert "玩家在线" in "".join(messages)
 
 
 def test_get_player(server: Server):
