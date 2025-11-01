@@ -74,7 +74,7 @@ class PlayerEventListener(EventListener):
         self.plugin.logger.info("===========================")
 
         self.plugin.run_tests("on_player_join", player=event.player)
-        self.plugin.bossbar.add_player(event.player)
+        self.plugin.boss_bar.add_player(event.player)
 
     @event_handler
     def on_player_emote(self, event: PlayerEmoteEvent) -> None:

@@ -46,7 +46,7 @@ class EndstoneTest(Plugin):
     def __init__(self):
         super().__init__()
         self.tracked_events: dict[str, int] = {}
-        self.bossbar: BossBar | None = None
+        self.boss_bar: BossBar | None = None
 
     def on_load(self) -> None:
         self.logger.info("on_load is called!")
@@ -55,7 +55,7 @@ class EndstoneTest(Plugin):
     def on_enable(self) -> None:
         self.logger.info("on_enable is called!")
         self.logger.info(f"protocol version: {self.server.protocol_version}")
-        self.bossbar = self.server.create_boss_bar(
+        self.boss_bar = self.server.create_boss_bar(
             "", BarColor.GREEN, BarStyle.SEGMENTED_10
         )
         self.register_events(ActorEventListener(self))
@@ -65,23 +65,23 @@ class EndstoneTest(Plugin):
         self.register_events(ServerEventListener(self))
         self.register_events(WeatherEventListener(self))
         self.register_events(self)
-        self.run_tests("on_load")
+        self.run_tests("on_enable")
         self.get_command("test").executor = TestCommandExecutor(self)
 
     def on_disable(self) -> None:
         self.logger.info("on_disable is called!")
-        self.bossbar.remove_all()
+        self.boss_bar.remove_all()
 
     def run_tests(self, name: str, **kwargs):
         return pytest.main(
-            ["-s", "--pyargs", f"endstone_test.tests.{name}"],
+            ["-s", "-v", "--pyargs", f"endstone_test.tests.{name}"],
             plugins=[FixtureInjection(server=self.server, plugin=self, **kwargs)],
         )
 
     def track_event(self, name: str):
         self.tracked_events.setdefault(name, 0)
-        self.bossbar.title = f"Events: 0/{len(self.tracked_events)}"
-        self.bossbar.progress = 0
+        self.boss_bar.title = f"Events: 0/{len(self.tracked_events)}"
+        self.boss_bar.progress = 0
 
     def on_event_triggered(self, event: Event, message: str, always_log: bool = False):
         event_name = event.__class__.__name__
@@ -102,8 +102,8 @@ class EndstoneTest(Plugin):
             else:
                 triggered_count += 1
 
-        self.bossbar.progress = triggered_count / len(self.tracked_events)
+        self.boss_bar.progress = triggered_count / len(self.tracked_events)
         if next_to_trigger:
-            self.bossbar.title = f"Events: {triggered_count}/{len(self.tracked_events)}, Next: {next_to_trigger}"
+            self.boss_bar.title = f"Events: {triggered_count}/{len(self.tracked_events)}, Next: {next_to_trigger}"
         else:
-            self.bossbar.title = "All events triggered!"
+            self.boss_bar.title = "All events triggered!"
