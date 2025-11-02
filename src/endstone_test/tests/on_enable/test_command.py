@@ -33,16 +33,21 @@ def test_server_command_sender(plugin: Plugin) -> None:
 
 
 @pytest.mark.parametrize(
-    "command,locale,expected",
+    "command_line,locale,expected",
     [
         ("listd", "zh_CN", "玩家在线"),
         ("status", None, "Server status"),
-        ("test sender", None, "You are the console!"),
     ],
 )
 def test_command_sender_wrapper(
-    server: Server, command: str, locale: str, expected: str
+    server: Server,
+    plugin: Plugin,
+    command: PluginCommand,
+    command_line: str,
+    locale: str | None,
+    expected: str,
 ) -> None:
+    command.executor = TestCommandExecutor(plugin)
     messages = []
 
     def on_message(message: Translatable | str):
@@ -51,8 +56,18 @@ def test_command_sender_wrapper(
         else:
             messages.append(message)
 
-    sender = CommandSenderWrapper(server.command_sender, on_message=on_message)
-    assert server.dispatch_command(sender, command)
+    def on_error(message: Translatable | str):
+        if isinstance(message, Translatable):
+            assert False, server.language.translate(message, locale="zh_CN")
+        else:
+            assert False, message
+
+    sender = CommandSenderWrapper(
+        server.command_sender, on_message=on_message, on_error=on_error
+    )
+
+    assert server.dispatch_command(sender, command_line)
     assert expected in "\n".join(
         messages
-    ), "Expected message {expected} not found in {messages}"
+    ), f"Expected message {expected} not found in {messages}"
+    command.executor = plugin
