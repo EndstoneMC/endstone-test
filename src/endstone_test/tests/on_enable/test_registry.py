@@ -1,8 +1,9 @@
+import typing
+
 import pytest
 from endstone import Server
 from endstone.enchantments import Enchantment
 from endstone.inventory import ItemType
-import typing
 
 T = typing.TypeVar("T")
 
