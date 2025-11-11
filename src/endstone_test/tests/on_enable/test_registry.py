@@ -14,12 +14,12 @@ T = typing.TypeVar("T")
         (
             Enchantment,
             "protection",
-            {"start_level": 1, "max_level": 4},
+            {"start_level": 1, "max_level": 4, "id": Enchantment.PROTECTION},
         ),
         (
             Enchantment,
-            "sharpness",
-            {"start_level": 1, "max_level": 5},
+            Enchantment.SHARPNESS,
+            {"start_level": 1, "max_level": 5, "id": Enchantment.SHARPNESS},
         ),
         (
             ItemType,

@@ -7,6 +7,7 @@ from endstone.inventory import ItemMeta, ItemStack, MapMeta
     "type_id,data,max_durability,max_stack_size,name",
     [
         ("minecraft:diamond_sword", 0, 1561, 1, "钻石剑"),
+        ("apple", 0, 0, 64, "苹果"),
         ("minecraft:apple", 0, 0, 64, "苹果"),
         ("minecraft:potion", 0, 0, 1, "水瓶"),
         ("minecraft:potion", 7, 0, 1, "隐身药水"),
@@ -30,7 +31,7 @@ def test_create_item_bad_type():
     with pytest.raises(RuntimeError) as err_info:
         _ = ItemStack("non_existent_item")
 
-    assert "Unknown item type: non_existent_item" == str(err_info.value)
+    assert "Unknown item type: minecraft:non_existent_item" == str(err_info.value)
 
 
 @pytest.mark.parametrize("amount", [-1, 0, 256])

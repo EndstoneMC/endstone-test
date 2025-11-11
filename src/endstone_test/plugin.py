@@ -74,7 +74,7 @@ class EndstoneTest(Plugin):
 
     def run_tests(self, name: str, **kwargs):
         return pytest.main(
-            ["-s", "-v", "--pyargs", f"endstone_test.tests.{name}"],
+            ["-s", "--pyargs", f"endstone_test.tests.{name}"],
             plugins=[FixtureInjection(server=self.server, plugin=self, **kwargs)],
         )
 
