@@ -201,6 +201,15 @@ class TestCommandExecutor(CommandExecutor):
                 else:
                     sender.send_error_message(f"Unknown inventory test: {type}")
 
+            case ["spawn", type]:
+                if not isinstance(sender, Player):
+                    sender.send_error_message(
+                        "You must execute this command as a player"
+                    )
+                    return False
+
+                sender.dimension.spawn_actor(sender.location, type)
+                sender.send_message(f"Spawned {type} at {sender.location}")
                 return True
 
         return True

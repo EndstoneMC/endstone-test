@@ -67,7 +67,7 @@ def test_command_sender_wrapper(
     )
 
     assert server.dispatch_command(sender, command_line)
-    assert expected in "\n".join(
-        messages
-    ), f"Expected message {expected} not found in {messages}"
+    assert expected in "\n".join(messages), (
+        f"Expected message {expected} not found in {messages}"
+    )
     command.executor = plugin
