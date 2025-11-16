@@ -6,6 +6,7 @@ from endstone.event import (
     PlayerBedLeaveEvent,
     PlayerChatEvent,
     PlayerDeathEvent,
+    PlayerDimensionChangeEvent,
     PlayerDropItemEvent,
     PlayerEmoteEvent,
     PlayerGameModeChangeEvent,
@@ -19,6 +20,7 @@ from endstone.event import (
     PlayerLoginEvent,
     PlayerMoveEvent,
     PlayerPickupItemEvent,
+    PlayerPortalEvent,
     PlayerQuitEvent,
     PlayerRespawnEvent,
     PlayerSkinChangeEvent,
@@ -202,4 +204,20 @@ class PlayerEventListener(EventListener):
     def on_player_change_skin(self, event: PlayerSkinChangeEvent):
         self.plugin.on_event_triggered(
             event, f"{event.player.name} changes skin to {event.new_skin.id}."
+        )
+
+    @event_handler
+    def on_player_portal(self, event: PlayerPortalEvent):
+        self.plugin.on_event_triggered(
+            event,
+            f"{event.player.name} teleported from {event.from_location} to {event.to_location} {ColorFormat.GREEN}via portal",
+            True,
+        )
+
+    @event_handler
+    def on_player_dimension_change(self, event: PlayerDimensionChangeEvent):
+        self.plugin.on_event_triggered(
+            event,
+            f"{event.player.name} has changed dimension from {event.from_dimension.name} to {event.to_dimension.name}.",
+            True,
         )
